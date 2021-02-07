@@ -4,5 +4,8 @@
     "description": "The data models used by the Óbidos game",
     "repository": "github:xsanda/obidos.git",
     "author": "Charlie Harding <obidos@charding.dev>",
-    "license": "GPLV3"
+    "license": "GPL-3.0-or-later",
+    "devDependencies": {
+        "typescript": "^4.1.3"
+    }
 }

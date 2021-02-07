@@ -3,7 +3,7 @@
   "description": "A clone of the board game Carcassonne, implemented in React.",
   "repository": "github:xsanda/obidos.git",
   "author": "Charlie Harding <obidos@charding.dev>",
-  "license": "GPLV3",
+  "license": "GPL-3.0-or-later",
   "private": true,
   "workspaces": [
     "model"
