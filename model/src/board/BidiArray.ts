@@ -18,9 +18,13 @@ export default class BidiArray<T> {
     else this.positive[i] = value;
   }
 
-  /** The first position on the row, inclusive */
+  /**
+   * The first position on the row, inclusive.
+   *
+   * Returns 0 rather than -0 if there are no negative entries.
+   */
   get min(): number {
-    return -this.negative.length;
+    return -this.negative.length || 0;
   }
 
   /** The final position on the row, exclusive */

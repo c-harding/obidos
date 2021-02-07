@@ -21,3 +21,4 @@ jobs:
       - run: yarn codecov
         name: Upload coverage
         working-directory: model
+        if: always()
