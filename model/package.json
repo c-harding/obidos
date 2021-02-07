@@ -6,6 +6,7 @@
     "author": "Charlie Harding <obidos@charding.dev>",
     "license": "GPL-3.0-or-later",
     "dependencies": {
+        "prettier": "^2.2.1",
         "wu": "^2.1.0"
     },
     "devDependencies": {
@@ -20,6 +21,8 @@
     },
     "scripts": {
         "test": "jest",
-        "codecov": "cd .. && codecov -f model/.coverage/lcov.info -F model"
+        "codecov": "cd .. && codecov -f model/.coverage/lcov.info -F model",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint --fix && prettier src/**/*.ts -w"
     }
 }
