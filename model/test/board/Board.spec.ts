@@ -39,4 +39,10 @@ describe("Board", () => {
       ]),
     );
   });
+
+  it("retrieves pieces correctly", () => {
+    const board = new Board(blankTile);
+    const piece = board.set(1, 0, new RotatedTile(blankTile));
+    expect(board.get(1, 0)).toBe(piece);
+  });
 });
