@@ -1,0 +1,8 @@
+{
+    "name": "@obidos/model",
+    "version": "0.0.1",
+    "description": "The data models used by the Óbidos game",
+    "repository": "github:xsanda/obidos.git",
+    "author": "Charlie Harding <obidos@charding.dev>",
+    "license": "GPLV3"
+}
