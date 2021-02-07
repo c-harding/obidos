@@ -1,4 +1,4 @@
-import { range } from "../src/iteration";
+import { outerWindow, range } from "../src/iteration";
 
 describe("iteration", () => {
   describe("range", () => {
@@ -28,6 +28,45 @@ describe("iteration", () => {
 
     it("iterates from positive to negative with a negative step", () => {
       expect([...range(5, -20, -5)]).toStrictEqual([5, 0, -5, -10, -15]);
+    });
+  });
+
+  describe("outerWindow", () => {
+    it("returns each pair of items", () => {
+      expect([...outerWindow([1, 2, 3], 2)]).toStrictEqual([
+        [undefined, 1],
+        [1, 2],
+        [2, 3],
+        [3, undefined],
+      ]);
+    });
+
+    it("returns each triplet of items", () => {
+      expect([...outerWindow([1, 2, 3], 3)]).toStrictEqual([
+        [undefined, undefined, 1],
+        [undefined, 1, 2],
+        [1, 2, 3],
+        [2, 3, undefined],
+        [3, undefined, undefined],
+      ]);
+    });
+
+    it("works with generators", () => {
+      expect([...outerWindow(range(3), 3)]).toStrictEqual([
+        [undefined, undefined, 0],
+        [undefined, 0, 1],
+        [0, 1, 2],
+        [1, 2, undefined],
+        [2, undefined, undefined],
+      ]);
+    });
+
+    it("returns nothing if the size is 1 and the range is empty", () => {
+      expect([...outerWindow([], 1)]).toStrictEqual([]);
+    });
+
+    it("returns the before and after elements if the size is 2 and the range is empty", () => {
+      expect([...outerWindow([], 2)]).toStrictEqual([[undefined, undefined]]);
     });
   });
 });
