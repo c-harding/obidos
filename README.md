@@ -1,5 +1,7 @@
 # Óbidos
 
+[![codecov](https://codecov.io/gh/xsanda/obidos/branch/main/graph/badge.svg?token=5WK9ON5B5I)](https://codecov.io/gh/xsanda/obidos)
+
 Óbidos is a work-in-progress web-based clone of the popular board game Carcassonne.
 It is named after the walled city of Óbidos in Portugal.
 
