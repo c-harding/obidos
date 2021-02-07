@@ -1,4 +1,7 @@
-import FrozenArrayBuilder from "./FrozenArrayBuilder";
+import FrozenArrayBuilder from "../board/FrozenArrayBuilder";
+import { Side } from "./Side";
+import { TileCity } from "./TileCity";
+import { TileRoad, TileRoadType } from "./TileRoad";
 
 export interface Tile {
   readonly cities: readonly TileCity[];
@@ -61,46 +64,4 @@ class TileBuilder {
  */
 export function Tile(): TileBuilder {
   return new TileBuilder();
-}
-
-/**
- * A TileRoad consists of either a road from one side to another or a road from a side or a road
- * ending on the tile.
- */
-export type TileRoad =
-  | {
-      readonly type: TileRoadType.THROUGH;
-      readonly source: Side;
-      readonly destination: Side;
-    }
-  | {
-      readonly type: TileRoadType.END;
-      readonly source: Side;
-      readonly destination?: undefined;
-    };
-
-export enum TileRoadType {
-  THROUGH,
-  END,
-}
-
-/**
- * A TileCity consists of a list of tiles, and optionally a pendant.
- */
-export interface TileCity {
-  walls: Set<Side>;
-  pendant: boolean;
-}
-
-export enum Side {
-  NORTH,
-  EAST,
-  SOUTH,
-  WEST,
-}
-
-export namespace Side {
-  export function rotate(basis: Side, by: Side): Side {
-    return (basis + by) % 4;
-  }
 }

@@ -2,8 +2,8 @@
     "compilerOptions": {
         "module": "commonjs",
         "noImplicitAny": true,
+        "strictNullChecks": true,
         "removeComments": true,
-        "preserveConstEnums": true,
         "sourceMap": true,
         "lib": [
             "ES2017"

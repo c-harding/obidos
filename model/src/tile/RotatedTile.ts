@@ -1,10 +1,13 @@
-import { Side, Tile, TileCity, TileRoad, TileRoadType } from "../Tile";
+import { Side } from "./Side";
+import { Tile } from "./Tile";
+import { TileCity } from "./TileCity";
+import { TileRoad, TileRoadType } from "./TileRoad";
 
 export default class RotatedTile {
   readonly tile: Tile;
   readonly orientation: Side;
 
-  constructor(tile: Tile, orientation: Side) {
+  constructor(tile: Tile, orientation: Side = Side.NORTH) {
     this.tile = tile;
     this.orientation = orientation;
   }
