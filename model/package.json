@@ -20,6 +20,6 @@
     },
     "scripts": {
         "test": "jest",
-        "codecov": "cat .coverage/lcov.info && codecov -f .coverage/lcov.info -F model"
+        "codecov": "cd .. && codecov -f model/.coverage/lcov.info -F model"
     }
 }

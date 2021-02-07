@@ -6,7 +6,8 @@
         "removeComments": true,
         "sourceMap": true,
         "lib": [
-            "ES2017"
+            "ES2017",
+            "DOM"
         ],
         "target": "ES2017"
     },
