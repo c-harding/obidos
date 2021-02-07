@@ -13,7 +13,7 @@ export default class RotatedTile {
   }
 
   #roads?: readonly TileRoad[];
-  roads(): readonly Readonly<TileRoad>[] {
+  get roads(): readonly Readonly<TileRoad>[] {
     return (this.#roads ??= Object.freeze(
       this.tile.roads.map((tile) => {
         if (tile.type === TileRoadType.END) {
@@ -33,13 +33,17 @@ export default class RotatedTile {
   }
 
   #cities?: readonly TileCity[];
-  cities(): readonly Readonly<TileCity>[] {
+  get cities(): readonly Readonly<TileCity>[] {
     return (this.#cities ??= Object.freeze(
       this.tile.cities.map(({ walls, ...rest }) => ({
         walls: new Set([...walls].map((side) => this.rotate(side))),
         ...rest,
       })),
     ));
+  }
+
+  get cloister(): boolean {
+    return this.tile.cloister;
   }
 
   private rotate(side: Side): Side {

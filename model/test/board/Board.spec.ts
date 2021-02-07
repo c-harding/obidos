@@ -44,5 +44,6 @@ describe("Board", () => {
     const board = new Board(blankTile);
     const piece = board.set(1, 0, new RotatedTile(blankTile));
     expect(board.get(1, 0)).toBe(piece);
+    expect(board.get(2, 2)).toBeUndefined();
   });
 });

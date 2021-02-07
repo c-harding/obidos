@@ -6,11 +6,13 @@ import { TileRoad, TileRoadType } from "./TileRoad";
 export interface Tile {
   readonly cities: readonly TileCity[];
   readonly roads: readonly TileRoad[];
+  readonly cloister: boolean;
 }
 
 class TileBuilder {
   #cities = new FrozenArrayBuilder<TileCity>();
   #roads = new FrozenArrayBuilder<TileRoad>();
+  #cloister = false;
 
   city(...sides: Side[]): this {
     this.#cities.push({
@@ -49,10 +51,16 @@ class TileBuilder {
     return this;
   }
 
+  cloister(): this {
+    this.#cloister = true;
+    return this;
+  }
+
   build(): Tile {
     return Object.freeze({
       cities: this.#cities.build(),
       roads: this.#roads.build(),
+      cloister: this.#cloister,
     });
   }
 }
