@@ -1,5 +1,5 @@
 export default class FrozenArrayBuilder<T> {
-  #array = [];
+  #array: T[] = [];
 
   /**
    * Freezes and appends new elements to an array, and returns the new length of the array.
