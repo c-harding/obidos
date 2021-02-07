@@ -3,14 +3,14 @@ import BidiArray from "../../src/board/BidiArray";
 describe("BidiArray", () => {
   it("starts with the correct min and max when empty", () => {
     const array = new BidiArray();
-    expect(array.min).toBe(0);
-    expect(array.max).toBe(0);
+    expect(array.min).toStrictEqual(0);
+    expect(array.max).toStrictEqual(0);
   });
 
   it("starts with the correct min and max when initialized", () => {
     const array = new BidiArray("initial value");
-    expect(array.min).toBe(0);
-    expect(array.max).toBe(0);
+    expect(array.min).toStrictEqual(0);
+    expect(array.max).toStrictEqual(0);
   });
 
   it("converts correctly to an array when empty", () => {
@@ -97,6 +97,6 @@ describe("BidiArray", () => {
   it("overwrites", () => {
     const array = new BidiArray("zero");
     array.set(0, "new");
-    expect(array.get(0)).toStrictEqual("zero");
+    expect(array.get(0)).toStrictEqual("new");
   });
 });
