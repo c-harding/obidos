@@ -55,4 +55,10 @@ describe("RotatedTile", () => {
       },
     ]);
   });
+
+  it("caches computed properties of tiles", () => {
+    const rotatedRoadAndCity = new RotatedTile(roadAndCity, Side.WEST);
+    expect(rotatedRoadAndCity.cities).toBe(rotatedRoadAndCity.cities);
+    expect(rotatedRoadAndCity.roads).toBe(rotatedRoadAndCity.roads);
+  });
 });
