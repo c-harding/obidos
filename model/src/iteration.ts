@@ -22,8 +22,16 @@ export function* outerWindow<T>(
 }
 
 export function range(end: number): Generator<number>;
-export function range(start: number, end: number): Generator<number>;
-export function* range(a: number, b?: number): Generator<number> {
-  const [min, max] = b === undefined ? [0, a] : [a, b];
-  for (let i = min; i < max; i++) yield i;
+export function range(
+  start: number,
+  end: number,
+  step?: number,
+): Generator<number>;
+export function* range(a: number, b?: number, step = 1): Generator<number> {
+  const [start, stop] = b === undefined ? [0, a] : [a, b];
+  if (step > 0) {
+    for (let i = start; i < stop; i += step) yield i;
+  } else {
+    for (let i = start; i > stop; i += step) yield i;
+  }
 }
