@@ -19,6 +19,11 @@ export class Board {
     return this.grid.get(row)?.get(col);
   }
 
+  set<T extends RotatedTile | undefined>(row: number, col: number, tile: T): T {
+    const boardRow = this.grid.get(row) ?? this.grid.set(row, new BidiArray());
+    return boardRow.set(col, tile);
+  }
+
   *freeLocations(): Generator<Position> {
     for (const [[prev, curr, next], row] of zip(
       outerWindow(this.grid, 3),

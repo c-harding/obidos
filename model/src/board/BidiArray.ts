@@ -13,9 +13,10 @@ export default class BidiArray<T> {
     else return this.positive[i];
   }
 
-  set(i: number, value: T | undefined): void {
+  set<V extends T | undefined>(i: number, value: V): V {
     if (i < 0) this.negative[-i - 1] = value;
     else this.positive[i] = value;
+    return value;
   }
 
   /**
