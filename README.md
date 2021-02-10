@@ -16,3 +16,15 @@ It is named after the walled city of Óbidos in Portugal.
 </figcaption>
 
 </figure>
+
+## Organisation
+
+The project is handled by yarn as a monorepo with multiple workspaces.
+This means that calling `yarn` from anywhere will install all the dependencies for the entire
+project.
+The following workspaces are included:
+
+### [`@obidos/model`](./model/#readme)
+
+This contains the data model for representing the game, and is used by both the server and the
+client.
