@@ -22,11 +22,7 @@ export function* outerWindow<T>(
 }
 
 export function range(end: number): Generator<number>;
-export function range(
-  start: number,
-  end: number,
-  step?: number,
-): Generator<number>;
+export function range(start: number, end: number, step?: number): Generator<number>;
 export function* range(a: number, b?: number, step = 1): Generator<number> {
   const [start, stop] = b === undefined ? [0, a] : [a, b];
   if (step > 0) {
