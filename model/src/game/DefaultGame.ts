@@ -3,6 +3,8 @@ import { range } from "../iteration";
 import { Side } from "../tile/Side";
 import { Tile } from "../tile/Tile";
 
+// Source:
+// https://static1.squarespace.com/static/53ec790ae4b0396cbd14d8a1/t/5979af2f893fc0424c4691f9/1501146946692/Carcassonne-board-game-rules.pdf
 export const defaultCards = {
   A: Tile().cloister().road(Side.SOUTH).build(),
   B: Tile().cloister().build(),
