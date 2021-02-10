@@ -3,7 +3,7 @@ export default class BidiArray<T> {
   private readonly positive: (T | undefined)[] = [];
 
   constructor(initialValue?: T) {
-    if (initialValue) {
+    if (initialValue !== undefined) {
       this.positive.push(initialValue);
     }
   }

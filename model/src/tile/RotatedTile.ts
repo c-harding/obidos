@@ -4,13 +4,10 @@ import { TileCity } from "./TileCity";
 import { TileRoad, TileRoadType } from "./TileRoad";
 
 export default class RotatedTile {
-  readonly tile: Tile;
-  readonly orientation: Side;
-
-  constructor(tile: Tile, orientation: Side = Side.NORTH) {
-    this.tile = tile;
-    this.orientation = orientation;
-  }
+  constructor(
+    public readonly tile: Tile,
+    public readonly orientation: Side = Side.NORTH,
+  ) {}
 
   #roads?: readonly TileRoad[];
   get roads(): readonly Readonly<TileRoad>[] {
