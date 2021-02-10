@@ -3,7 +3,7 @@ import { range } from "../iteration";
 import { Side } from "../tile/Side";
 import { Tile } from "../tile/Tile";
 
-export const defaultCards: Record<string, Tile> = {
+export const defaultCards = {
   A: Tile().cloister().road(Side.SOUTH).build(),
   B: Tile().cloister().build(),
   C: Tile().pendantCity(Side.NORTH, Side.EAST, Side.SOUTH, Side.WEST).build(),

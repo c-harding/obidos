@@ -1,7 +1,7 @@
 import { Tile } from "../tile/Tile";
 import { defaultCards } from "./DefaultGame";
 
-function tileToStrings(id: string, tile: Tile, scale: number): string[] {
+export function tileToStrings(id: string, tile: Tile, scale: number): string[] {
   const dashes = Array(scale + 1).join("--");
   return [
     `${id}${dashes}+`,
@@ -10,9 +10,13 @@ function tileToStrings(id: string, tile: Tile, scale: number): string[] {
   ];
 }
 
-if (require.main === module) {
-  const [, , scale = 9] = process.argv;
+export function printAllDefaultCards(scale: number): void {
   for (const [id, tile] of Object.entries(defaultCards)) {
     console.log(tileToStrings(id, tile, +scale).join("\n"));
   }
+}
+
+if (require.main === module) {
+  const [, , scale = 9] = process.argv;
+  printAllDefaultCards(+scale);
 }
