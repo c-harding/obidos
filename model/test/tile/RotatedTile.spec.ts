@@ -1,8 +1,9 @@
 import RotatedTile from "../../src/tile/RotatedTile";
 import { Side } from "../../src/tile/Side";
 import { Tile } from "../../src/tile/Tile";
-import { TileCity } from "../../src/tile/TileCity";
-import { TileRoad, TileRoadType } from "../../src/tile/TileRoad";
+import type { TileCity } from "../../src/tile/TileCity";
+import type { TileRoad } from "../../src/tile/TileRoad";
+import { TileRoadType } from "../../src/tile/TileRoad";
 
 describe("RotatedTile", () => {
   const cityNES = Tile().city(Side.NORTH, Side.EAST, Side.SOUTH).build();

@@ -68,18 +68,13 @@ describe("FrozenArrayBuilder", () => {
   });
 
   it("works with strings", () => {
-    const array = new FrozenArrayBuilder<string>()
-      .push("String")
-      .push("other")
-      .build();
+    const array = new FrozenArrayBuilder<string>().push("String").push("other").build();
     expect(array).toStrictEqual(["String", "other"]);
   });
 
   it("maintains object equality", () => {
     const anObject = { a: 1 };
-    const array = new FrozenArrayBuilder<{ a: number }>()
-      .push(anObject)
-      .build();
+    const array = new FrozenArrayBuilder<{ a: number }>().push(anObject).build();
     expect(array).toContain(anObject);
 
     // Proof that this was testing for object equality rather than structural equality

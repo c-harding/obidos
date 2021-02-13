@@ -82,12 +82,7 @@ describe("BidiArray", () => {
     const array = new BidiArray();
     array.set(-1, "before");
     array.set(2, "after after");
-    expect([...array]).toStrictEqual([
-      "before",
-      undefined,
-      undefined,
-      "after after",
-    ]);
+    expect([...array]).toStrictEqual(["before", undefined, undefined, "after after"]);
     expect(array.get(-1)).toStrictEqual("before");
     expect(array.get(0)).toBeUndefined();
     expect(array.get(1)).toBeUndefined();

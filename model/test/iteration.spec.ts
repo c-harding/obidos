@@ -1,4 +1,4 @@
-import { outerWindow, range } from "../src/iteration";
+import { fillArray, generate, generateArray, outerWindow, range } from "../src/iteration";
 
 describe("iteration", () => {
   describe("range", () => {
@@ -67,6 +67,74 @@ describe("iteration", () => {
 
     it("returns the before and after elements if the size is 2 and the range is empty", () => {
       expect([...outerWindow(2)([])]).toStrictEqual([[undefined, undefined]]);
+    });
+  });
+
+  describe("generate", () => {
+    it.each([0, 1, 4])(
+      "calls the callback the right number of times for an array of length %d",
+      (n) => {
+        const mock = jest.fn();
+        [...generate(n, mock)];
+        expect(mock).toHaveBeenCalledTimes(n);
+      },
+    );
+
+    it("counts calls properly", () => {
+      const mock = jest.fn();
+
+      mock(1, 2);
+      expect(mock).not.toHaveBeenCalledWith();
+
+      mock();
+      expect(mock).toHaveBeenCalledWith();
+    });
+
+    it("calls the callback lazily", () => {
+      const mock = jest.fn();
+      const generator = generate(5, mock);
+      expect(mock).not.toHaveBeenCalled();
+
+      generator.next();
+      expect(mock).toHaveBeenCalledTimes(1);
+
+      // expect mock to have been called without arguments (see generate › counts calls properly)
+      expect(mock).toHaveBeenCalledWith();
+    });
+
+    it("produces the right sequence", () => {
+      let count = 0;
+      const counter = () => count++;
+      expect([...generate(5, counter)]).toStrictEqual([0, 1, 2, 3, 4]);
+    });
+  });
+
+  describe("generateArray", () => {
+    it.each([0, 1, 4])(
+      "calls the callback the right number of times for an array of length %d",
+      (n) => {
+        const mock = jest.fn();
+        generateArray(n, mock);
+        expect(mock).toHaveBeenCalledTimes(n);
+      },
+    );
+
+    it("produces the right array", () => {
+      let count = 0;
+      const counter = () => count++;
+      expect(generateArray(5, counter)).toStrictEqual([0, 1, 2, 3, 4]);
+    });
+  });
+
+  describe("fillArray", () => {
+    it("fills an array with copies", () => {
+      const array = fillArray(3, {});
+
+      expect(array[0]).toBe(array[1]);
+      expect(array[0]).toBe(array[2]);
+
+      // This is not equal to a different object
+      expect(array[0]).not.toBe({});
     });
   });
 });
