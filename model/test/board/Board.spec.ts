@@ -1,12 +1,21 @@
 import { Board } from "../../src/board/Board";
 import RotatedTile from "../../src/tile/RotatedTile";
+import { Side } from "../../src/tile/Side";
 import { Tile } from "../../src/tile/Tile";
 
 describe("Board", () => {
   const blankTile = Tile().build();
+  const crossroadsTile = Tile()
+    .road(Side.NORTH)
+    .road(Side.EAST)
+    .road(Side.SOUTH)
+    .road(Side.WEST)
+    .build();
+  const horizontalRoadTile = Tile().throughRoad(Side.EAST, Side.WEST).build();
+
   it("shows the correct free spaces initially", () => {
     const board = new Board(blankTile);
-    const freeLocations = [...board.freeLocations()];
+    const freeLocations = board.freeLocations;
     expect(freeLocations).toHaveLength(4);
     expect(freeLocations).toStrictEqual(
       expect.arrayContaining([
@@ -18,13 +27,13 @@ describe("Board", () => {
     );
   });
 
-  it("shows the correct free spaces after adding spaces", () => {
+  it("shows the correct free spaces after adding tiles", () => {
     const board = new Board(blankTile);
     board.set(1, 0, new RotatedTile(blankTile));
     board.set(1, 1, new RotatedTile(blankTile));
     board.set(0, -1, new RotatedTile(blankTile));
 
-    const freeLocations = [...board.freeLocations()];
+    const freeLocations = board.freeLocations;
     expect(freeLocations).toHaveLength(8);
     expect(freeLocations).toStrictEqual(
       expect.arrayContaining([
@@ -40,10 +49,65 @@ describe("Board", () => {
     );
   });
 
+  it("shows the correct available spaces after adding pieces", () => {
+    const board = new Board(blankTile);
+    board.set(1, 0, new RotatedTile(blankTile));
+    board.set(1, 1, new RotatedTile(blankTile));
+
+    const freeLocations = [...board.freeLocationsForTile(horizontalRoadTile)];
+    const expected: [number, number, Side][] = [
+      [-1, 0, Side.NORTH],
+      [-1, 0, Side.SOUTH],
+      [0, -1, Side.EAST],
+      [0, -1, Side.WEST],
+      [1, -1, Side.EAST],
+      [1, -1, Side.WEST],
+      [1, 2, Side.EAST],
+      [1, 2, Side.WEST],
+      [2, 0, Side.NORTH],
+      [2, 0, Side.SOUTH],
+      [2, 1, Side.NORTH],
+      [2, 1, Side.SOUTH],
+    ];
+    expect(freeLocations).toHaveLength(expected.length);
+    expect(freeLocations).toStrictEqual(expect.arrayContaining(expected));
+  });
+
   it("retrieves pieces correctly", () => {
     const board = new Board(blankTile);
     const piece = board.set(1, 0, new RotatedTile(blankTile));
     expect(board.get(1, 0)).toBe(piece);
     expect(board.get(2, 2)).toBeUndefined();
+  });
+
+  it("allows placing pieces next to each other", () => {
+    const board = new Board(blankTile);
+    const newTile = new RotatedTile(blankTile);
+    const piece = board.set(1, 0, newTile);
+    expect(piece).toBeDefined();
+    expect(board.get(1, 0)).toBe(newTile);
+    expect(board.get(1, 0)).toBe(piece);
+  });
+
+  it("blocks placing pieces next to each other when they do not match", () => {
+    const board = new Board(blankTile);
+    const piece = board.set(1, 0, new RotatedTile(crossroadsTile));
+    expect(piece).toBeUndefined();
+    expect(board.get(1, 0)).toBe(piece);
+  });
+
+  it("blocks placing pieces discontiguously", () => {
+    const board = new Board(blankTile);
+    expect(board.set(2, 0, new RotatedTile(blankTile))).toBeUndefined();
+    expect(board.get(2, 0)).toBeUndefined();
+  });
+
+  it("blocks replacing pieces", () => {
+    const board = new Board(blankTile);
+    const originalTile = board.get(0, 0);
+    const replacementTile = new RotatedTile(crossroadsTile);
+    expect(board.set(0, 0, replacementTile)).toBeUndefined();
+    expect(board.get(0, 0)).not.toBe(replacementTile);
+    expect(board.get(0, 0)).toBe(originalTile);
   });
 });

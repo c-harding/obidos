@@ -3,13 +3,14 @@ import type { Side } from "./Side";
 import type { TileCity } from "./TileCity";
 import { TileRoad } from "./TileRoad";
 import { TileRoadType } from "./TileRoad";
+import TileSide from "./TileSide";
 
 export interface Tile {
   readonly cities: readonly TileCity[];
   readonly roads: readonly TileRoad[];
   readonly cloister: boolean;
 
-  roadSides(): Set<Side>;
+  side(side: Side): TileSide;
 }
 
 /**
@@ -29,8 +30,12 @@ export namespace Tile {
       readonly cloister: boolean,
     ) {}
 
-    roadSides(): Set<Side> {
-      return new Set(this.roads.flatMap(TileRoad.toSides));
+    side(side: Side): TileSide {
+      if (this.roads.some((road) => TileRoad.toSides(road).includes(side))) {
+        return TileSide.ROAD;
+      } else if (this.cities.some((city) => city.walls.has(side))) {
+        return TileSide.CITY;
+      } else return TileSide.FIELD;
     }
   }
 

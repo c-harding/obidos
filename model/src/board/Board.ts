@@ -1,12 +1,14 @@
 import wu, { zip } from "wu";
 
 import { outerWindow, range } from "../iteration";
+import MemoizedProp from "../memoizedProp";
 import RotatedTile from "../tile/RotatedTile";
 import { Side } from "../tile/Side";
 import type { Tile } from "../tile/Tile";
 import BidiArray from "./BidiArray";
 
 type Position = [row: number, col: number];
+type PositionWithSide = [row: number, col: number, side: Side];
 
 export class Board {
   private modifiableGrid: BidiArray<BidiArray<RotatedTile>>;
@@ -22,10 +24,37 @@ export class Board {
     return this.grid.get(row)?.get(col);
   }
 
-  set<T extends RotatedTile | undefined>(row: number, col: number, tile: T): T {
-    this.moveNumber++;
+  private offsetLocation([row, col]: Position, side: Side): Position {
+    switch (side) {
+      case Side.NORTH:
+        return [row - 1, col];
+      case Side.EAST:
+        return [row, col + 1];
+      case Side.SOUTH:
+        return [row + 1, col];
+      case Side.WEST:
+        return [row, col - 1];
+    }
+  }
+
+  pieceFits(row: number, col: number, tile: RotatedTile): boolean {
+    for (const side of Side.values) {
+      const neighbour = this.get(...this.offsetLocation([row, col], side));
+      if (neighbour && neighbour.side(Side.opposite(side)) !== tile.side(side)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  set(row: number, col: number, tile: RotatedTile): RotatedTile | undefined {
+    if (!this.freeLocations.find(([r, c]) => row === r && col === c)) return;
+    if (!this.pieceFits(row, col, tile)) return;
+
     const boardRow =
       this.modifiableGrid.get(row) ?? this.modifiableGrid.set(row, new BidiArray());
+
+    this.moveNumber++;
     return boardRow.set(col, tile);
   }
 
@@ -53,7 +82,7 @@ export class Board {
       .reduce(Math.max, -Infinity);
   }
 
-  *freeLocations(): Generator<Position> {
+  private *freeLocationGenerator(): Generator<Position> {
     for (const [[prev, curr, next], row] of zip(
       outerWindow(3)(this.grid),
       range(this.grid.min - 1, this.grid.max + 1),
@@ -66,6 +95,24 @@ export class Board {
         const horizontalNeighbours = curr?.get(col - 1) || curr?.get(col + 1);
         if (verticalNeighbours || horizontalNeighbours) {
           yield [row, col];
+        }
+      }
+    }
+  }
+
+  #freeLocations = new MemoizedProp(
+    () => this.moveNumber,
+    () => Object.freeze([...this.freeLocationGenerator()]),
+  );
+  get freeLocations(): readonly Position[] {
+    return this.#freeLocations.value;
+  }
+
+  *freeLocationsForTile(tile: Tile): Generator<PositionWithSide> {
+    for (const [row, col] of this.freeLocations) {
+      for (const side of Side.values) {
+        if (this.pieceFits(row, col, new RotatedTile(tile, side))) {
+          yield [row, col, side];
         }
       }
     }

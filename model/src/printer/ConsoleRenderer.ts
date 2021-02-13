@@ -6,6 +6,7 @@ import { fillArray, generateArray, outerWindow, range, repeatString } from "../i
 import { Side } from "../tile/Side";
 import type { Tile } from "../tile/Tile";
 import { TileRoad, TileRoadType } from "../tile/TileRoad";
+import TileSide from "../tile/TileSide";
 import type TileRenderer from "./TileRenderer";
 
 export default class ConsoleRenderer implements TileRenderer<string[]> {
@@ -141,11 +142,10 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
   }
 
   renderTile(tile: Tile, label = "┏"): string[] {
-    const roadSides = tile.roadSides();
     const dashesForSide = (side: Side) =>
-      this.repeatStringWithMidway("━━", roadSides.has(side) ? "┥┝" : "━━");
+      this.repeatStringWithMidway("━━", tile.side(side) === TileSide.ROAD ? "┥┝" : "━━");
     const sideDash = (side: Side, i: number) =>
-      i == this.midway && roadSides.has(side) ? "╪" : "┃";
+      i == this.midway && tile.side(side) === TileSide.ROAD ? "╪" : "┃";
 
     return [
       `${label}${dashesForSide(Side.NORTH)}┓`,
@@ -191,22 +191,27 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
       )) {
         const leftWall = left || curr;
         const leftWallMidway =
-          (leftWall && left?.roadSides().has(Side.EAST)) ||
-          curr?.roadSides().has(Side.WEST);
+          left?.side(Side.EAST) === TileSide.ROAD ||
+          curr?.side(Side.WEST) === TileSide.ROAD;
+
         const aboveWall = above || curr;
         const aboveWallMidway =
-          (aboveWall && above?.roadSides().has(Side.SOUTH)) ||
-          curr?.roadSides().has(Side.NORTH);
+          above?.side(Side.SOUTH) === TileSide.ROAD ||
+          curr?.side(Side.NORTH) === TileSide.ROAD;
+
         const leftWallSymbol = leftWall ? "┃" : " ";
         const leftWallMidwaySymbol = leftWallMidway ? "╪" : leftWallSymbol;
+
         const aboveWallSymbol = aboveWall ? "━━" : "  ";
         const aboveWallMidwaySymbol = aboveWallMidway ? "┥┝" : aboveWallSymbol;
+
         const topLeftWallSymbol = ConsoleRenderer.generateCorner(
           aboveLeft !== undefined,
           above !== undefined,
           left !== undefined,
           curr !== undefined,
         );
+
         newRows[0].push(
           topLeftWallSymbol +
             this.repeatStringWithMidway(aboveWallSymbol, aboveWallMidwaySymbol),

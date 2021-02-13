@@ -3,12 +3,17 @@ import type { Tile } from "./Tile";
 import type { TileCity } from "./TileCity";
 import type { TileRoad } from "./TileRoad";
 import { TileRoadType } from "./TileRoad";
+import type TileSide from "./TileSide";
 
 export default class RotatedTile implements Tile {
   constructor(
     public readonly tile: Tile,
     public readonly orientation: Side = Side.NORTH,
-  ) {}
+  ) {
+    if (tile instanceof RotatedTile) {
+      return new RotatedTile(tile.tile, Side.rotate(tile.orientation, orientation));
+    }
+  }
 
   #roads?: readonly TileRoad[];
   get roads(): readonly Readonly<TileRoad>[] {
@@ -40,8 +45,8 @@ export default class RotatedTile implements Tile {
     ));
   }
 
-  roadSides(): Set<Side> {
-    return new Set([...this.tile.roadSides()].map((side) => this.rotate(side)));
+  side(side: Side): TileSide {
+    return this.tile.side(this.unrotate(side));
   }
 
   get cloister(): boolean {
@@ -50,5 +55,9 @@ export default class RotatedTile implements Tile {
 
   private rotate(side: Side): Side {
     return Side.rotate(side, this.orientation);
+  }
+
+  private unrotate(side: Side): Side {
+    return Side.unrotate(side, this.orientation);
   }
 }
