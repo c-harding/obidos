@@ -129,22 +129,22 @@ export namespace Tile {
         switch (roadSection) {
           case Side.NORTH:
             for (const row of range(0, midway)) {
-              canvas[row][midway] = "||";
+              canvas[row][midway] = "││";
             }
             break;
           case Side.EAST:
             for (const col of range(startFrom, scale)) {
-              canvas[midway][col] = "==";
+              canvas[midway][col] = "══";
             }
             break;
           case Side.SOUTH:
             for (const row of range(startFrom, scale)) {
-              canvas[row][midway] = "||";
+              canvas[row][midway] = "││";
             }
             break;
           case Side.WEST:
             for (const col of range(0, midway)) {
-              canvas[midway][col] = "==";
+              canvas[midway][col] = "══";
             }
             break;
         }
@@ -152,7 +152,7 @@ export namespace Tile {
     }
 
     if (tile.roads.length >= 3) {
-      canvas[midway][midway] = "><";
+      canvas[midway][midway] = "╳╳";
     }
 
     if (tile.cloister) {

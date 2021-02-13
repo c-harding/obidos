@@ -2,11 +2,11 @@ import { Tile } from "../tile/Tile";
 import { defaultCards } from "./DefaultGame";
 
 export function tileToStrings(id: string, tile: Tile, scale: number): string[] {
-  const dashes = Array(scale + 1).join("--");
+  const dashes = Array(scale + 1).join("━━");
   return [
-    `${id}${dashes}+`,
-    ...Tile.draw(tile, scale).map((row) => `|${row}|`),
-    `+${dashes}+`,
+    `${id}${dashes}╋`,
+    ...Tile.draw(tile, scale).map((row) => `┃${row}┃`),
+    `╋${dashes}╋`,
   ];
 }
 
