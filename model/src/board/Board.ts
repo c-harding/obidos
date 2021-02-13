@@ -1,9 +1,10 @@
-import BidiArray from "./BidiArray";
-import RotatedTile from "../tile/RotatedTile";
-import { Tile } from "../tile/Tile";
 import { zip } from "wu";
-import { Side } from "../tile/Side";
+
 import { outerWindow, range } from "../iteration";
+import RotatedTile from "../tile/RotatedTile";
+import { Side } from "../tile/Side";
+import type { Tile } from "../tile/Tile";
+import BidiArray from "./BidiArray";
 
 type Position = [row: number, col: number];
 

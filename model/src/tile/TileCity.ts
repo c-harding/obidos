@@ -1,4 +1,4 @@
-import { Side } from "./Side";
+import type { Side } from "./Side";
 
 /**
  * A TileCity consists of a list of tiles, and optionally a pendant.

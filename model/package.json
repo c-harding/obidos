@@ -25,7 +25,8 @@
         "test": "jest",
         "codecov": "cd .. && codecov -f model/.coverage/lcov.info -F model",
         "typecheck": "tsc --noEmit",
-        "lint": "eslint --fix && prettier src/**/*.ts -w",
+        "eslint": "eslint --fix src/**/*.ts",
+        "lint": "yarn eslint && prettier src/**/*.ts -w",
         "print-deck": "ts-node src/game/PrintDeck.ts"
     }
 }

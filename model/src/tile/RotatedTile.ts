@@ -1,7 +1,8 @@
 import { Side } from "./Side";
-import { Tile } from "./Tile";
-import { TileCity } from "./TileCity";
-import { TileRoad, TileRoadType } from "./TileRoad";
+import type { Tile } from "./Tile";
+import type { TileCity } from "./TileCity";
+import type { TileRoad } from "./TileRoad";
+import { TileRoadType } from "./TileRoad";
 
 export default class RotatedTile {
   constructor(

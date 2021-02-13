@@ -1,8 +1,9 @@
 import FrozenArrayBuilder from "../board/FrozenArrayBuilder";
 import { range } from "../iteration";
 import { Side } from "./Side";
-import { TileCity } from "./TileCity";
-import { TileRoad, TileRoadType } from "./TileRoad";
+import type { TileCity } from "./TileCity";
+import type { TileRoad } from "./TileRoad";
+import { TileRoadType } from "./TileRoad";
 
 export interface Tile {
   readonly cities: readonly TileCity[];
