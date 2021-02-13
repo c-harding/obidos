@@ -3,6 +3,7 @@
     "parser": "@typescript-eslint/parser",
     "plugins": [
         "@typescript-eslint",
+        "unused-imports",
         "simple-import-sort"
     ],
     "extends": [
@@ -24,6 +25,7 @@
             }
         ],
         "simple-import-sort/imports": "warn",
-        "@typescript-eslint/consistent-type-imports": "error"
+        "@typescript-eslint/consistent-type-imports": "error",
+        "unused-imports/no-unused-imports-ts": "warn"
     }
 }
