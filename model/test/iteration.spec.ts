@@ -1,4 +1,11 @@
-import { fillArray, generate, generateArray, outerWindow, range } from "../src/iteration";
+import {
+  fillArray,
+  generate,
+  generateArray,
+  outerWindow,
+  range,
+  repeatString,
+} from "../src/iteration";
 
 describe("iteration", () => {
   describe("range", () => {
@@ -135,6 +142,20 @@ describe("iteration", () => {
 
       // This is not equal to a different object
       expect(array[0]).not.toBe({});
+    });
+  });
+
+  describe("repeatString", () => {
+    it("repeats a single character", () => {
+      expect(repeatString(5, "l")).toBe("lllll");
+    });
+
+    it("repeats multiple characters", () => {
+      expect(repeatString(5, "<>")).toBe("<><><><><>");
+    });
+
+    it("repeats 0 times to produce an empty string", () => {
+      expect(repeatString(0, "<>")).toBe("");
     });
   });
 });
