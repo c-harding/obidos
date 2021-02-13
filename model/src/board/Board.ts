@@ -16,11 +16,14 @@ export class Board {
     );
   }
 
+  private moveNumber = 0;
+
   get(row: number, col: number): RotatedTile | undefined {
     return this.grid.get(row)?.get(col);
   }
 
   set<T extends RotatedTile | undefined>(row: number, col: number, tile: T): T {
+    this.moveNumber++;
     const boardRow =
       this.modifiableGrid.get(row) ?? this.modifiableGrid.set(row, new BidiArray());
     return boardRow.set(col, tile);
