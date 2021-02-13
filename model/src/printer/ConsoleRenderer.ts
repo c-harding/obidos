@@ -5,7 +5,7 @@ import { defaultCards } from "../game/DefaultGame";
 import { fillArray, generateArray, outerWindow, range, repeatString } from "../iteration";
 import { Side } from "../tile/Side";
 import type { Tile } from "../tile/Tile";
-import { TileRoadType } from "../tile/TileRoad";
+import { TileRoad, TileRoadType } from "../tile/TileRoad";
 import type TileRenderer from "./TileRenderer";
 
 export default class ConsoleRenderer implements TileRenderer<string[]> {
@@ -22,6 +22,10 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
   }
 
   constructor(readonly scale: number) {}
+
+  private get midway() {
+    return Math.floor((this.scale - 1) / 2);
+  }
 
   private renderTileContents(tile: Tile): string[] {
     const scale = this.scale;
@@ -48,39 +52,35 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
       }
     }
 
-    const midway = Math.floor((scale - 1) / 2);
-
     const neighbours = (first: Side, other: Side) => {
       return (first + 1) % 4 === other || first === (other + 1) % 4;
     };
 
     for (const road of tile.roads) {
-      const roadSections =
-        road.type === TileRoadType.END ? [road.source] : [road.source, road.destination];
       const isStraight =
         road.type === TileRoadType.THROUGH && !neighbours(road.source, road.destination);
-      const startFrom = isStraight ? midway : midway + 1;
+      const startFrom = isStraight ? this.midway : this.midway + 1;
 
-      for (const roadSection of roadSections) {
+      for (const roadSection of TileRoad.toSides(road)) {
         switch (roadSection) {
           case Side.NORTH:
-            for (const row of range(0, midway)) {
-              canvas[row][midway] = "││";
+            for (const row of range(0, this.midway)) {
+              canvas[row][this.midway] = "││";
             }
             break;
           case Side.EAST:
             for (const col of range(startFrom, scale)) {
-              canvas[midway][col] = "══";
+              canvas[this.midway][col] = "══";
             }
             break;
           case Side.SOUTH:
             for (const row of range(startFrom, scale)) {
-              canvas[row][midway] = "││";
+              canvas[row][this.midway] = "││";
             }
             break;
           case Side.WEST:
-            for (const col of range(0, midway)) {
-              canvas[midway][col] = "══";
+            for (const col of range(0, this.midway)) {
+              canvas[this.midway][col] = "══";
             }
             break;
         }
@@ -88,11 +88,11 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
     }
 
     if (tile.roads.length >= 3) {
-      canvas[midway][midway] = "╳╳";
+      canvas[this.midway][this.midway] = "╳╳";
     }
 
     if (tile.cloister) {
-      canvas[midway][midway] = cloisterSymbol;
+      canvas[this.midway][this.midway] = cloisterSymbol;
     }
 
     for (const city of tile.cities) {
@@ -133,26 +133,51 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
     return canvas.map((row) => row.join(""));
   }
 
-  renderTile(tile: Tile, label = "╋"): string[] {
-    const dashes = repeatString(this.scale, "━━");
+  private repeatStringWithMidway(edgeSymbol: string, midwaySymbol: string): string {
+    return range(this.scale)
+      .map((i) => (i === this.midway ? midwaySymbol : edgeSymbol))
+      .toArray()
+      .join("");
+  }
+
+  renderTile(tile: Tile, label = "┏"): string[] {
+    const roadSides = tile.roadSides();
+    const dashesForSide = (side: Side) =>
+      this.repeatStringWithMidway("━━", roadSides.has(side) ? "┥┝" : "━━");
+    const sideDash = (side: Side, i: number) =>
+      i == this.midway && roadSides.has(side) ? "╪" : "┃";
+
     return [
-      `${label}${dashes}╋`,
-      ...this.renderTileContents(tile).map((row) => `┃${row}┃`),
-      `╋${dashes}╋`,
+      `${label}${dashesForSide(Side.NORTH)}┓`,
+      ...this.renderTileContents(tile).map(
+        (row, i) => `${sideDash(Side.WEST, i)}${row}${sideDash(Side.EAST, i)}`,
+      ),
+      `┗${dashesForSide(Side.SOUTH)}┛`,
     ];
+  }
+
+  static generateCorner(
+    topLeft: boolean,
+    topRight: boolean,
+    bottomLeft: boolean,
+    bottomRight: boolean,
+  ): string {
+    return " ┏┓┳┗┣╋╋┛╋┫╋┻╋╋╋".charAt(
+      (bottomRight ? 1 : 0) +
+        (bottomLeft ? 2 : 0) +
+        (topRight ? 4 : 0) +
+        (topLeft ? 8 : 0),
+    );
   }
 
   renderBoard(board: Board): string[] {
     const { minX, maxX } = board;
     const grid = range(board.minY, board.maxY)
-      .map((y) => {
-        return range(minX, maxX)
-          .map((x) => {
-            const cell = board.get(y, x);
-            return cell && this.renderTileContents(cell);
-          })
-          .toArray();
-      })
+      .map((y) =>
+        range(minX, maxX)
+          .map((x) => board.get(y, x))
+          .toArray(),
+      )
       .toArray();
 
     const canvas: string[] = [];
@@ -162,21 +187,35 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
         [aboveLeft, left] = repeat(undefined),
         [above, curr] = repeat(undefined),
       ] of outerWindow(2)(
-        zip<string[] | undefined, string[] | undefined>(
-          prevRow ?? repeat(undefined),
-          currRow ?? repeat(undefined),
-        ),
+        zip(prevRow ?? repeat(undefined), currRow ?? repeat(undefined)),
       )) {
         const leftWall = left || curr;
+        const leftWallMidway =
+          (leftWall && left?.roadSides().has(Side.EAST)) ||
+          curr?.roadSides().has(Side.WEST);
         const aboveWall = above || curr;
-        const topLeftWall = aboveLeft || leftWall || curr;
+        const aboveWallMidway =
+          (aboveWall && above?.roadSides().has(Side.SOUTH)) ||
+          curr?.roadSides().has(Side.NORTH);
         const leftWallSymbol = leftWall ? "┃" : " ";
+        const leftWallMidwaySymbol = leftWallMidway ? "╪" : leftWallSymbol;
         const aboveWallSymbol = repeatString(this.scale, aboveWall ? "━━" : "  ");
-        const topLeftWallSymbol = topLeftWall ? "╋" : " ";
-        newRows[0].push(topLeftWallSymbol + aboveWallSymbol);
+        const aboveWallMidwaySymbol = aboveWallMidway ? "╪" : aboveWallSymbol;
+        const topLeftWallSymbol = ConsoleRenderer.generateCorner(
+          aboveLeft !== undefined,
+          above !== undefined,
+          left !== undefined,
+          curr !== undefined,
+        );
+        newRows[0].push(
+          topLeftWallSymbol +
+            this.repeatStringWithMidway(aboveWallSymbol, aboveWallMidwaySymbol),
+        );
+        const tileContents = curr && this.renderTileContents(curr);
         for (const i of range(this.scale)) {
           newRows[i + 1].push(
-            leftWallSymbol + (curr?.[i] ?? repeatString(this.scale, "  ")),
+            (i === this.midway ? leftWallMidwaySymbol : leftWallSymbol) +
+              (tileContents?.[i] ?? repeatString(this.scale, "  ")),
           );
         }
       }

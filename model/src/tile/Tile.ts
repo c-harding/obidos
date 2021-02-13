@@ -1,13 +1,15 @@
 import FrozenArrayBuilder from "../board/FrozenArrayBuilder";
 import type { Side } from "./Side";
 import type { TileCity } from "./TileCity";
-import type { TileRoad } from "./TileRoad";
+import { TileRoad } from "./TileRoad";
 import { TileRoadType } from "./TileRoad";
 
 export interface Tile {
   readonly cities: readonly TileCity[];
   readonly roads: readonly TileRoad[];
   readonly cloister: boolean;
+
+  roadSides(): Set<Side>;
 }
 
 /**
@@ -20,6 +22,18 @@ export function Tile(): Tile.Builder {
 }
 
 export namespace Tile {
+  class ConcreteTile implements Tile {
+    constructor(
+      readonly cities: readonly TileCity[],
+      readonly roads: readonly TileRoad[],
+      readonly cloister: boolean,
+    ) {}
+
+    roadSides(): Set<Side> {
+      return new Set(this.roads.flatMap(TileRoad.toSides));
+    }
+  }
+
   export class Builder {
     #cities = new FrozenArrayBuilder<TileCity>();
     #roads = new FrozenArrayBuilder<TileRoad>();
@@ -68,11 +82,7 @@ export namespace Tile {
     }
 
     build(): Tile {
-      return Object.freeze({
-        cities: this.#cities.build(),
-        roads: this.#roads.build(),
-        cloister: this.#cloister,
-      });
+      return new ConcreteTile(this.#cities.build(), this.#roads.build(), this.#cloister);
     }
   }
 }

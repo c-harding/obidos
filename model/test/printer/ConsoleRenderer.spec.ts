@@ -4,7 +4,7 @@ import ConsoleRenderer from "../../src/printer/ConsoleRenderer";
 describe("ConsoleRenderer", () => {
   it("prints a road properly", () => {
     expect(new ConsoleRenderer(7).renderTile(defaultCards.U)).toStrictEqual([
-      "╋━━━━━━━━━━━━━━╋",
+      "┏━━━━━━┥┝━━━━━━┓",
       "┃      ││      ┃",
       "┃      ││      ┃",
       "┃      ││      ┃",
@@ -12,25 +12,25 @@ describe("ConsoleRenderer", () => {
       "┃      ││      ┃",
       "┃      ││      ┃",
       "┃      ││      ┃",
-      "╋━━━━━━━━━━━━━━╋",
+      "┗━━━━━━┥┝━━━━━━┛",
     ]);
   });
 
   it("prints a crossroads properly", () => {
     expect(new ConsoleRenderer(5).renderTile(defaultCards.X)).toStrictEqual([
-      "╋━━━━━━━━━━╋",
+      "┏━━━━┥┝━━━━┓",
       "┃    ││    ┃",
       "┃    ││    ┃",
-      "┃════╳╳════┃",
+      "╪════╳╳════╪",
       "┃    ││    ┃",
       "┃    ││    ┃",
-      "╋━━━━━━━━━━╋",
+      "┗━━━━┥┝━━━━┛",
     ]);
   });
 
   it("prints a cloister with a road properly", () => {
     expect(new ConsoleRenderer(7).renderTile(defaultCards.A)).toStrictEqual([
-      "╋━━━━━━━━━━━━━━╋",
+      "┏━━━━━━━━━━━━━━┓",
       "┃              ┃",
       "┃              ┃",
       "┃              ┃",
@@ -38,13 +38,13 @@ describe("ConsoleRenderer", () => {
       "┃      ││      ┃",
       "┃      ││      ┃",
       "┃      ││      ┃",
-      "╋━━━━━━━━━━━━━━╋",
+      "┗━━━━━━┥┝━━━━━━┛",
     ]);
   });
 
   it("prints a single two-sided city", () => {
     expect(new ConsoleRenderer(7).renderTile(defaultCards.M)).toStrictEqual([
-      "╋━━━━━━━━━━━━━━╋",
+      "┏━━━━━━━━━━━━━━┓",
       "┃🏠🏠🏠🏠🏠🏠  ┃",
       "┃🏠🏠🏠🏠🏠    ┃",
       "┃🏠🏠🏠🏠      ┃",
@@ -52,12 +52,12 @@ describe("ConsoleRenderer", () => {
       "┃🏠🏠          ┃",
       "┃🏠            ┃",
       "┃              ┃",
-      "╋━━━━━━━━━━━━━━╋",
+      "┗━━━━━━━━━━━━━━┛",
     ]);
   });
   it("prints a long thin city", () => {
     expect(new ConsoleRenderer(9).renderTile(defaultCards.F)).toStrictEqual([
-      "╋━━━━━━━━━━━━━━━━━━╋",
+      "┏━━━━━━━━━━━━━━━━━━┓",
       "┃🏠              🏠┃",
       "┃🏠🏠          🏠🏠┃",
       "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
@@ -67,12 +67,12 @@ describe("ConsoleRenderer", () => {
       "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
       "┃🏠🏠          🏠🏠┃",
       "┃🏠              🏠┃",
-      "╋━━━━━━━━━━━━━━━━━━╋",
+      "┗━━━━━━━━━━━━━━━━━━┛",
     ]);
   });
   it("prints a pair of cities", () => {
     expect(new ConsoleRenderer(9).renderTile(defaultCards.I)).toStrictEqual([
-      "╋━━━━━━━━━━━━━━━━━━╋",
+      "┏━━━━━━━━━━━━━━━━━━┓",
       "┃                  ┃",
       "┃                🏠┃",
       "┃              🏠🏠┃",
@@ -82,7 +82,7 @@ describe("ConsoleRenderer", () => {
       "┃              🏠🏠┃",
       "┃    🏠🏠🏠🏠🏠  🏠┃",
       "┃  🏠🏠🏠🏠🏠🏠🏠  ┃",
-      "╋━━━━━━━━━━━━━━━━━━╋",
+      "┗━━━━━━━━━━━━━━━━━━┛",
     ]);
   });
 });

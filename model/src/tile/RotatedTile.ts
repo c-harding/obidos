@@ -4,7 +4,7 @@ import type { TileCity } from "./TileCity";
 import type { TileRoad } from "./TileRoad";
 import { TileRoadType } from "./TileRoad";
 
-export default class RotatedTile {
+export default class RotatedTile implements Tile {
   constructor(
     public readonly tile: Tile,
     public readonly orientation: Side = Side.NORTH,
@@ -38,6 +38,10 @@ export default class RotatedTile {
         ...rest,
       })),
     ));
+  }
+
+  roadSides(): Set<Side> {
+    return new Set([...this.tile.roadSides()].map((side) => this.rotate(side)));
   }
 
   get cloister(): boolean {

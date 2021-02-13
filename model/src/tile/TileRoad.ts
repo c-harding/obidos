@@ -16,6 +16,14 @@ export type TileRoad =
       readonly destination?: undefined;
     };
 
+export namespace TileRoad {
+  export function toSides(road: TileRoad): Side[] {
+    return road.type === TileRoadType.END
+      ? [road.source]
+      : [road.source, road.destination];
+  }
+}
+
 export enum TileRoadType {
   THROUGH,
   END,
