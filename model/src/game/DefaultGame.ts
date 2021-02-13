@@ -34,13 +34,13 @@ export const defaultCards = {
 
 export const startingCard = defaultCards.D;
 
-const copies = <T extends unknown>(...args: [T, number][]) => {
+function copies<T>(...args: [T, number][]) {
   const array = new FrozenArrayBuilder<T>();
   for (const [item, count] of args) {
     for (const _ of range(count)) array.push(item);
   }
   return array.build();
-};
+}
 
 export const defaultDrawPile = copies<Tile>(
   [defaultCards.A, 2],

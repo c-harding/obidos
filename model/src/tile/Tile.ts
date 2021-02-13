@@ -124,7 +124,7 @@ export namespace Tile {
         road.type === TileRoadType.THROUGH && !neighbours(road.source, road.destination);
       const startFrom = isStraight ? midway : midway + 1;
 
-      for (const roadSection of roadSections)
+      for (const roadSection of roadSections) {
         switch (roadSection) {
           case Side.NORTH:
             for (const row of range(0, midway)) {
@@ -147,6 +147,7 @@ export namespace Tile {
             }
             break;
         }
+      }
     }
 
     if (tile.roads.length >= 3) {
