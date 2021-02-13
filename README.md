@@ -28,3 +28,7 @@ The following workspaces are included:
 
 This contains the data model for representing the game, and is used by both the server and the
 client.
+
+### [`@obidos/cli-player`](./cli-player/#readme)
+
+This contains a CLI interface for playing Óbidos.
