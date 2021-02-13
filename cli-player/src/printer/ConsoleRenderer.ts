@@ -1,13 +1,18 @@
+import type { Board } from "@obidos/model/src/board/Board";
+import { defaultCards } from "@obidos/model/src/game/DefaultGame";
+import {
+  fillArray,
+  generateArray,
+  outerWindow,
+  range,
+  repeatString,
+} from "@obidos/model/src/iteration";
+import type TileRenderer from "@obidos/model/src/printer/TileRenderer";
+import { Side } from "@obidos/model/src/tile/Side";
+import type { Tile } from "@obidos/model/src/tile/Tile";
+import { TileRoad, TileRoadType } from "@obidos/model/src/tile/TileRoad";
+import TileSide from "@obidos/model/src/tile/TileSide";
 import { repeat, zip } from "wu";
-
-import type { Board } from "../board/Board";
-import { defaultCards } from "../game/DefaultGame";
-import { fillArray, generateArray, outerWindow, range, repeatString } from "../iteration";
-import { Side } from "../tile/Side";
-import type { Tile } from "../tile/Tile";
-import { TileRoad, TileRoadType } from "../tile/TileRoad";
-import TileSide from "../tile/TileSide";
-import type TileRenderer from "./TileRenderer";
 
 export default class ConsoleRenderer implements TileRenderer<string[]> {
   private static coordinatesForSide: Record<Side, [number, number]> = Object.freeze({

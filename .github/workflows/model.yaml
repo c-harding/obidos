@@ -19,8 +19,6 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
       - run: yarn test
-        working-directory: model
       - run: yarn codecov
         name: Upload coverage
-        working-directory: model
         if: always()

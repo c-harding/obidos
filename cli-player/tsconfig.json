@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "lib": [
+            "ES2019",
+            "DOM"
+        ],
+        "target": "ES2019"
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ]
+}

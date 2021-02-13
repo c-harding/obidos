@@ -1,7 +1,7 @@
-import { Board } from "../../src/board/Board";
-import { defaultCards } from "../../src/game/DefaultGame";
+import { Board } from "@obidos/model/src/board/Board";
+import { defaultCards } from "@obidos/model/src/game/DefaultGame";
 import ConsoleRenderer from "../../src/printer/ConsoleRenderer";
-import type { Tile } from "../../src/tile/Tile";
+import type { Tile } from "@obidos/model/src/tile/Tile";
 
 function tileRenderer(renderer: ConsoleRenderer, tile: Tile): string[] {
   return renderer.renderTile(tile);

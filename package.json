@@ -6,10 +6,13 @@
   "license": "GPL-3.0-or-later",
   "private": true,
   "workspaces": [
-    "model"
+    "model",
+    "cli-player"
   ],
   "scripts": {
-    "lint": "yarn workspaces foreach run lint"
+    "lint": "yarn workspaces foreach run lint",
+    "test": "yarn workspaces foreach run test",
+    "codecov": "yarn workspaces foreach run codecov"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "latest",

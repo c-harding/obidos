@@ -637,7 +637,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@obidos/model@workspace:model":
+"@obidos/cli-player@workspace:cli-player":
+  version: 0.0.0-use.local
+  resolution: "@obidos/cli-player@workspace:cli-player"
+  dependencies:
+    "@obidos/model": 0.0.1
+    "@types/jest": ^26.0.20
+    "@types/wu": ^2.1.42
+    codecov: ^3.8.1
+    eslint: ^7.19.0
+    jest: ^26.6.3
+    prettier: ^2.2.1
+    ts-node: ^9.1.1
+    typescript: ^4.1.3
+    wu: ^2.1.0
+  languageName: unknown
+  linkType: soft
+
+"@obidos/model@0.0.1, @obidos/model@workspace:model":
   version: 0.0.0-use.local
   resolution: "@obidos/model@workspace:model"
   dependencies:
