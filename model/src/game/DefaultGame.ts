@@ -55,7 +55,7 @@ export const defaultDrawPile = copies<Tile>(
   [defaultCards.J, 3],
   [defaultCards.K, 3],
   [defaultCards.L, 3],
-  [defaultCards.M, 3],
+  [defaultCards.M, 2],
   [defaultCards.N, 3],
   [defaultCards.O, 2],
   [defaultCards.P, 3],
