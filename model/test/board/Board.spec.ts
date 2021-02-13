@@ -11,6 +11,7 @@ describe("Board", () => {
     .road(Side.SOUTH)
     .road(Side.WEST)
     .build();
+  const westCityTile = Tile().city(Side.WEST).build();
   const horizontalRoadTile = Tile().throughRoad(Side.EAST, Side.WEST).build();
 
   it("shows the correct free spaces initially", () => {
@@ -54,7 +55,9 @@ describe("Board", () => {
     board.set(1, 0, new RotatedTile(blankTile));
     board.set(1, 1, new RotatedTile(blankTile));
 
-    const freeLocations = [...board.freeLocationsForTile(horizontalRoadTile)];
+    const freeLocations = [
+      ...board.freeLocationsForTile(new RotatedTile(horizontalRoadTile)),
+    ];
     const expected: [number, number, Side][] = [
       [-1, 0, Side.NORTH],
       [-1, 0, Side.SOUTH],
@@ -106,9 +109,14 @@ describe("Board", () => {
 
   it("blocks placing pieces next to each other when they do not match", () => {
     const board = new Board(blankTile);
-    const piece = board.set(1, 0, new RotatedTile(crossroadsTile));
+
+    let piece = board.set(1, 0, new RotatedTile(crossroadsTile));
     expect(piece).toBeUndefined();
-    expect(board.get(1, 0)).toBe(piece);
+    expect(board.get(1, 0)).toBeUndefined();
+
+    piece = board.set(0, 1, new RotatedTile(westCityTile));
+    expect(piece).toBeUndefined();
+    expect(board.get(0, 1)).toBeUndefined();
   });
 
   it("blocks placing pieces discontiguously", () => {
