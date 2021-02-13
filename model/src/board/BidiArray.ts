@@ -1,4 +1,4 @@
-export default class BidiArray<T> {
+class BidiArray<T> implements BidiArray.Readonly<T> {
   private readonly negative: (T | undefined)[] = [];
   private readonly positive: (T | undefined)[] = [];
 
@@ -42,3 +42,21 @@ export default class BidiArray<T> {
     }
   }
 }
+
+namespace BidiArray {
+  export interface Readonly<T> extends Iterable<T | undefined> {
+    get(i: number): T | undefined;
+
+    /**
+     * The first position on the row, inclusive.
+     *
+     * Returns 0 rather than -0 if there are no negative entries.
+     */
+    readonly min: number;
+
+    /** The final position on the row, exclusive */
+    readonly max: number;
+  }
+}
+
+export default BidiArray;

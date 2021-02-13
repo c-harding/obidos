@@ -27,6 +27,6 @@
         "typecheck": "tsc --noEmit",
         "eslint": "eslint --fix src/**/*.ts",
         "lint": "yarn eslint && prettier src/**/*.ts -w",
-        "print-deck": "ts-node src/game/PrintDeck.ts"
+        "print-deck": "ts-node src/printer/ConsoleRenderer.ts"
     }
 }

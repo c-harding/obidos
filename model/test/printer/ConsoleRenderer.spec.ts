@@ -1,9 +1,9 @@
 import { defaultCards } from "../../src/game/DefaultGame";
-import { tileToStrings } from "../../src/game/PrintDeck";
+import ConsoleRenderer from "../../src/printer/ConsoleRenderer";
 
-describe("PrintDeck", () => {
+describe("ConsoleRenderer", () => {
   it("prints a road properly", () => {
-    expect(tileToStrings("╋", defaultCards.U, 7)).toStrictEqual([
+    expect(new ConsoleRenderer(7).renderTile(defaultCards.U)).toStrictEqual([
       "╋━━━━━━━━━━━━━━╋",
       "┃      ││      ┃",
       "┃      ││      ┃",
@@ -17,7 +17,7 @@ describe("PrintDeck", () => {
   });
 
   it("prints a crossroads properly", () => {
-    expect(tileToStrings("╋", defaultCards.X, 5)).toStrictEqual([
+    expect(new ConsoleRenderer(5).renderTile(defaultCards.X)).toStrictEqual([
       "╋━━━━━━━━━━╋",
       "┃    ││    ┃",
       "┃    ││    ┃",
@@ -29,7 +29,7 @@ describe("PrintDeck", () => {
   });
 
   it("prints a cloister with a road properly", () => {
-    expect(tileToStrings("╋", defaultCards.A, 7)).toStrictEqual([
+    expect(new ConsoleRenderer(7).renderTile(defaultCards.A)).toStrictEqual([
       "╋━━━━━━━━━━━━━━╋",
       "┃              ┃",
       "┃              ┃",
@@ -43,7 +43,7 @@ describe("PrintDeck", () => {
   });
 
   it("prints a single two-sided city", () => {
-    expect(tileToStrings("╋", defaultCards.M, 7)).toStrictEqual([
+    expect(new ConsoleRenderer(7).renderTile(defaultCards.M)).toStrictEqual([
       "╋━━━━━━━━━━━━━━╋",
       "┃🏠🏠🏠🏠🏠🏠  ┃",
       "┃🏠🏠🏠🏠🏠    ┃",
@@ -56,7 +56,7 @@ describe("PrintDeck", () => {
     ]);
   });
   it("prints a long thin city", () => {
-    expect(tileToStrings("╋", defaultCards.F, 9)).toStrictEqual([
+    expect(new ConsoleRenderer(9).renderTile(defaultCards.F)).toStrictEqual([
       "╋━━━━━━━━━━━━━━━━━━╋",
       "┃🏠              🏠┃",
       "┃🏠🏠          🏠🏠┃",
@@ -71,7 +71,7 @@ describe("PrintDeck", () => {
     ]);
   });
   it("prints a pair of cities", () => {
-    expect(tileToStrings("╋", defaultCards.I, 9)).toStrictEqual([
+    expect(new ConsoleRenderer(9).renderTile(defaultCards.I)).toStrictEqual([
       "╋━━━━━━━━━━━━━━━━━━╋",
       "┃                  ┃",
       "┃                🏠┃",

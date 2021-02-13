@@ -33,7 +33,7 @@ describe("iteration", () => {
 
   describe("outerWindow", () => {
     it("returns each pair of items", () => {
-      expect([...outerWindow([1, 2, 3], 2)]).toStrictEqual([
+      expect([...outerWindow(2)([1, 2, 3])]).toStrictEqual([
         [undefined, 1],
         [1, 2],
         [2, 3],
@@ -42,7 +42,7 @@ describe("iteration", () => {
     });
 
     it("returns each triplet of items", () => {
-      expect([...outerWindow([1, 2, 3], 3)]).toStrictEqual([
+      expect([...outerWindow(3)([1, 2, 3])]).toStrictEqual([
         [undefined, undefined, 1],
         [undefined, 1, 2],
         [1, 2, 3],
@@ -52,7 +52,7 @@ describe("iteration", () => {
     });
 
     it("works with generators", () => {
-      expect([...outerWindow(range(3), 3)]).toStrictEqual([
+      expect([...outerWindow(3)(range(3))]).toStrictEqual([
         [undefined, undefined, 0],
         [undefined, 0, 1],
         [0, 1, 2],
@@ -62,11 +62,11 @@ describe("iteration", () => {
     });
 
     it("returns nothing if the size is 1 and the range is empty", () => {
-      expect([...outerWindow([], 1)]).toStrictEqual([]);
+      expect([...outerWindow(1)([])]).toStrictEqual([]);
     });
 
     it("returns the before and after elements if the size is 2 and the range is empty", () => {
-      expect([...outerWindow([], 2)]).toStrictEqual([[undefined, undefined]]);
+      expect([...outerWindow(2)([])]).toStrictEqual([[undefined, undefined]]);
     });
   });
 });
