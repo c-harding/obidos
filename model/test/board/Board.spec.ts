@@ -73,6 +73,21 @@ describe("Board", () => {
     expect(freeLocations).toStrictEqual(expect.arrayContaining(expected));
   });
 
+  it("returns the correct bounds", () => {
+    const board = new Board(blankTile);
+    board.set(1, 0, new RotatedTile(blankTile));
+    board.set(1, 1, new RotatedTile(blankTile));
+    board.set(1, 2, new RotatedTile(blankTile));
+    board.set(-1, 0, new RotatedTile(blankTile));
+    board.set(-2, 0, new RotatedTile(blankTile));
+    board.set(-2, -1, new RotatedTile(blankTile));
+
+    expect(board.minCol).toBe(-1);
+    expect(board.maxCol).toBe(3);
+    expect(board.minRow).toBe(-2);
+    expect(board.maxRow).toBe(2);
+  });
+
   it("retrieves pieces correctly", () => {
     const board = new Board(blankTile);
     const piece = board.set(1, 0, new RotatedTile(blankTile));

@@ -62,21 +62,21 @@ export class Board {
     return this.modifiableGrid;
   }
 
-  get minY(): number {
+  get minRow(): number {
     return this.grid.min;
   }
 
-  get maxY(): number {
+  get maxRow(): number {
     return this.grid.max;
   }
 
-  get minX(): number {
+  get minCol(): number {
     return wu(this.grid)
       .map((row) => row?.min ?? +Infinity)
       .reduce(Math.min, +Infinity);
   }
 
-  get maxX(): number {
+  get maxCol(): number {
     return wu(this.grid)
       .map((row) => row?.max ?? -Infinity)
       .reduce(Math.max, -Infinity);

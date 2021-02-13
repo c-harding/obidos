@@ -176,10 +176,10 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
   }
 
   renderBoard(board: Board): string[] {
-    const { minX, maxX } = board;
-    const grid = range(board.minY, board.maxY)
+    const { minCol, maxCol } = board;
+    const grid = range(board.minRow, board.maxRow)
       .map((y) =>
-        range(minX, maxX)
+        range(minCol, maxCol)
           .map((x) => board.get(y, x))
           .toArray(),
       )
