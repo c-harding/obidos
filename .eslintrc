@@ -4,7 +4,8 @@
     "plugins": [
         "@typescript-eslint",
         "unused-imports",
-        "simple-import-sort"
+        "simple-import-sort",
+        "import"
     ],
     "extends": [
         "eslint:recommended",
@@ -26,6 +27,7 @@
         ],
         "simple-import-sort/imports": "warn",
         "@typescript-eslint/consistent-type-imports": "error",
-        "unused-imports/no-unused-imports-ts": "warn"
+        "unused-imports/no-unused-imports-ts": "warn",
+        "import/no-duplicates": "warn"
     }
 }

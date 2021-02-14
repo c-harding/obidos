@@ -2,9 +2,11 @@ import {
   fillArray,
   generate,
   generateArray,
+  indexedOuterWindow,
   outerWindow,
   range,
   repeatString,
+  trimArray,
 } from "../src/iteration";
 
 describe("iteration", () => {
@@ -74,6 +76,59 @@ describe("iteration", () => {
 
     it("returns the before and after elements if the size is 2 and the range is empty", () => {
       expect([...outerWindow(2)([])]).toStrictEqual([[undefined, undefined]]);
+    });
+  });
+
+  describe("indexedOuterWindow", () => {
+    it("returns each pair of items", () => {
+      expect([...indexedOuterWindow(2)([1, 2, 3])]).toStrictEqual([
+        [
+          [undefined, -1],
+          [1, 0],
+        ],
+        [
+          [1, 0],
+          [2, 1],
+        ],
+        [
+          [2, 1],
+          [3, 2],
+        ],
+        [
+          [3, 2],
+          [undefined, 3],
+        ],
+      ]);
+    });
+
+    it("works with an offset", () => {
+      expect([...indexedOuterWindow(3, -2)(range(3))]).toStrictEqual([
+        [
+          [undefined, -4],
+          [undefined, -3],
+          [0, -2],
+        ],
+        [
+          [undefined, -3],
+          [0, -2],
+          [1, -1],
+        ],
+        [
+          [0, -2],
+          [1, -1],
+          [2, 0],
+        ],
+        [
+          [1, -1],
+          [2, 0],
+          [undefined, 1],
+        ],
+        [
+          [2, 0],
+          [undefined, 1],
+          [undefined, 2],
+        ],
+      ]);
     });
   });
 
@@ -156,6 +211,32 @@ describe("iteration", () => {
 
     it("repeats 0 times to produce an empty string", () => {
       expect(repeatString(0, "<>")).toBe("");
+    });
+  });
+
+  describe("trimArray", () => {
+    it("does nothing when there are no empty strings", () => {
+      expect(trimArray(["a", "bbb", "c"])).toStrictEqual(["a", "bbb", "c"]);
+    });
+
+    it("does nothing when there are no empty string at either end", () => {
+      expect(trimArray(["a", "", "c"])).toStrictEqual(["a", "", "c"]);
+    });
+
+    it("removes empty strings at the start", () => {
+      expect(trimArray(["", "", "c", "dd"])).toStrictEqual(["c", "dd"]);
+    });
+
+    it("removes empty strings at the end", () => {
+      expect(trimArray(["a", "bb", "c", "", "", ""])).toStrictEqual(["a", "bb", "c"]);
+    });
+
+    it("removes empty strings at both ends", () => {
+      expect(trimArray(["", "bb", "c", "", "", ""])).toStrictEqual(["bb", "c"]);
+    });
+
+    it("returns an empty array when there are no non-empty entries", () => {
+      expect(trimArray(["", "", "", "", "", ""])).toStrictEqual([]);
     });
   });
 });

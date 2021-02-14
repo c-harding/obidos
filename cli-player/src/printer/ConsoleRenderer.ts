@@ -1,9 +1,9 @@
-import type { Board } from "@obidos/model/src/board/Board";
+import type { Board, Position } from "@obidos/model/src/board/Board";
 import { defaultCards } from "@obidos/model/src/game/DefaultGame";
 import {
   fillArray,
   generateArray,
-  outerWindow,
+  indexedOuterWindow,
   range,
   repeatString,
 } from "@obidos/model/src/iteration";
@@ -175,9 +175,13 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
     );
   }
 
-  renderBoard(board: Board): string[] {
-    const { minCol, maxCol } = board;
-    const grid = range(board.minRow, board.maxRow)
+  renderBoard(board: Board, positions: readonly Position[] = []): string[] {
+    const minCol = Math.min(board.minCol, ...positions.map(([_row, col]) => col));
+    const maxCol = Math.max(board.maxCol, ...positions.map(([_row, col]) => col + 1));
+    const minRow = Math.min(board.minRow, ...positions.map(([row, _col]) => row));
+    const maxRow = Math.max(board.maxRow, ...positions.map(([row, _col]) => row + 1));
+    const blankRow = () => repeat(undefined, maxCol - minCol);
+    const grid = range(minRow, maxRow)
       .map((y) =>
         range(minCol, maxCol)
           .map((x) => board.get(y, x))
@@ -186,14 +190,15 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
       .toArray();
 
     const canvas: string[] = [];
-    for (const [prevRow, currRow] of outerWindow(2)(grid)) {
+    for (const [[prevRow], [currRow, rowNo]] of indexedOuterWindow(2, minRow)(grid)) {
       const newRows: string[][] = generateArray((currRow ? this.scale : 0) + 1, () => []);
       for (const [
-        [aboveLeft, left] = repeat(undefined),
-        [above, curr] = repeat(undefined),
-      ] of outerWindow(2)(
-        zip(prevRow ?? repeat(undefined), currRow ?? repeat(undefined)),
-      )) {
+        [[aboveLeft, left] = repeat(undefined)],
+        [[above, curr] = repeat(undefined), colNo],
+      ] of indexedOuterWindow(
+        2,
+        minCol,
+      )(zip(prevRow ?? blankRow(), currRow ?? blankRow()))) {
         const leftWall = left || curr;
         const leftWallMidway =
           left?.side(Side.EAST) === TileSide.ROAD ||
@@ -221,7 +226,17 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
           topLeftWallSymbol +
             this.repeatStringWithMidway(aboveWallSymbol, aboveWallMidwaySymbol),
         );
-        const tileContents = curr && this.renderTileContents(curr);
+        let tileContents = undefined;
+        if (curr) {
+          tileContents = this.renderTileContents(curr);
+        } else {
+          const index = positions.findIndex(
+            ([row, col]) => row === rowNo && col === colNo,
+          );
+          if (index !== -1) {
+            tileContents = this.generateNumberTile(index + 1);
+          }
+        }
         if (currRow) {
           for (const i of range(this.scale)) {
             newRows[i + 1].push(
@@ -235,6 +250,17 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
       canvas.push(...newRows.map((row) => row.join("").trimEnd()));
     }
     return canvas;
+  }
+
+  private generateNumberTile(number: number) {
+    const blank = repeatString(this.scale, "  ");
+    const numberString = number.toString();
+    const numberRow = numberString
+      .padStart(this.scale + numberString.length / 2)
+      .padEnd(2 * this.scale);
+    return range(this.scale)
+      .map((i) => (i === this.midway ? numberRow : blank))
+      .toArray();
   }
 
   printAllDefaultCards(): void {

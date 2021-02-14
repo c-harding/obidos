@@ -7,8 +7,8 @@ import { Side } from "../tile/Side";
 import type { Tile } from "../tile/Tile";
 import BidiArray from "./BidiArray";
 
-type Position = [row: number, col: number];
-type PositionWithSide = [row: number, col: number, side: Side];
+export type Position = readonly [row: number, col: number];
+export type PositionWithSides = readonly [row: number, col: number, side: Set<Side>];
 
 export class Board {
   private modifiableGrid: BidiArray<BidiArray<RotatedTile>>;
@@ -47,7 +47,7 @@ export class Board {
     return true;
   }
 
-  set(row: number, col: number, tile: RotatedTile): RotatedTile | undefined {
+  add(row: number, col: number, tile: RotatedTile): RotatedTile | undefined {
     if (!this.freeLocations.find(([r, c]) => row === r && col === c)) return;
     if (!this.pieceFits(row, col, tile)) return;
 
@@ -108,12 +108,14 @@ export class Board {
     return this.#freeLocations.value;
   }
 
-  *freeLocationsForTile(tile: Tile): Generator<PositionWithSide> {
+  *freeLocationsForTile(tile: Tile): Generator<PositionWithSides> {
     for (const [row, col] of this.freeLocations) {
-      for (const side of Side.values) {
-        if (this.pieceFits(row, col, new RotatedTile(tile, side))) {
-          yield [row, col, side];
-        }
+      const sides = Side.values.filter((side) =>
+        this.pieceFits(row, col, new RotatedTile(tile, side)),
+      );
+
+      if (sides.length !== 0) {
+        yield [row, col, new Set(sides)];
       }
     }
   }
