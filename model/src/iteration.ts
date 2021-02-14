@@ -28,7 +28,7 @@ export const window = (size: number) =>
  */
 export const outerWindow = (size: number) =>
   function <T>(iterable: Iterable<T>): Generator<(T | undefined)[]> {
-    let blanks = () => repeat(undefined, size - 1);
+    const blanks = () => repeat(undefined, size - 1);
     return window(size)(chain(blanks(), iterable, blanks()));
   };
 
@@ -53,7 +53,7 @@ export type Indexed<T> = [T, number];
  */
 export const indexedOuterWindow = (size: number, enumerateFrom = 0) =>
   function <T>(iterable: Iterable<T>): Generator<Indexed<T | undefined>[]> {
-    let blanks = () => repeat(undefined, size - 1);
+    const blanks = () => repeat(undefined, size - 1);
     return window(size)(
       enumerate(chain(blanks(), iterable, blanks()), enumerateFrom - size + 1),
     );
