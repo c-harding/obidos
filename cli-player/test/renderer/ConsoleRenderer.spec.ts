@@ -1,11 +1,11 @@
 import { Board } from "@obidos/model/src/board/Board";
-import { defaultCards } from "@obidos/model/src/game/DefaultGame";
+import { defaultTiles } from "@obidos/model/src/game/DefaultGame";
 import RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import { Side } from "@obidos/model/src/tile/Side";
 import { Tile } from "@obidos/model/src/tile/Tile";
 import wu from "wu";
 
-import ConsoleRenderer from "../../src/printer/ConsoleRenderer";
+import ConsoleRenderer from "../../src/renderer/ConsoleRenderer";
 
 function tileRenderer(renderer: ConsoleRenderer, tile: Tile): string[] {
   return renderer.renderTile(tile);
@@ -20,7 +20,7 @@ describe("ConsoleRenderer", () => {
     ["renderBoard", boardRenderer],
   ])("%s", (_name, renderer) => {
     it("prints a road properly", () => {
-      expect(renderer(new ConsoleRenderer(7), defaultCards.U)).toStrictEqual([
+      expect(renderer(new ConsoleRenderer(7), defaultTiles.U)).toStrictEqual([
         "┏━━━━━━┥┝━━━━━━┓",
         "┃      ││      ┃",
         "┃      ││      ┃",
@@ -34,7 +34,7 @@ describe("ConsoleRenderer", () => {
     });
 
     it("prints a crossroads properly", () => {
-      expect(renderer(new ConsoleRenderer(5), defaultCards.X)).toStrictEqual([
+      expect(renderer(new ConsoleRenderer(5), defaultTiles.X)).toStrictEqual([
         "┏━━━━┥┝━━━━┓",
         "┃    ││    ┃",
         "┃    ││    ┃",
@@ -46,7 +46,7 @@ describe("ConsoleRenderer", () => {
     });
 
     it("prints a cloister with a road properly", () => {
-      expect(renderer(new ConsoleRenderer(7), defaultCards.A)).toStrictEqual([
+      expect(renderer(new ConsoleRenderer(7), defaultTiles.A)).toStrictEqual([
         "┏━━━━━━━━━━━━━━┓",
         "┃              ┃",
         "┃              ┃",
@@ -60,7 +60,7 @@ describe("ConsoleRenderer", () => {
     });
 
     it("prints a single two-sided city", () => {
-      expect(renderer(new ConsoleRenderer(7), defaultCards.M)).toStrictEqual([
+      expect(renderer(new ConsoleRenderer(7), defaultTiles.M)).toStrictEqual([
         "┏━━━━━━━━━━━━━━┓",
         "┃🏠🏠🏠🏠🏠🏠  ┃",
         "┃🏠🏠🏠🏠🏠    ┃",
@@ -74,7 +74,7 @@ describe("ConsoleRenderer", () => {
     });
 
     it("prints a long thin city", () => {
-      expect(renderer(new ConsoleRenderer(9), defaultCards.F)).toStrictEqual([
+      expect(renderer(new ConsoleRenderer(9), defaultTiles.F)).toStrictEqual([
         "┏━━━━━━━━━━━━━━━━━━┓",
         "┃🏠              🏠┃",
         "┃🏠🏠          🏠🏠┃",
@@ -90,7 +90,7 @@ describe("ConsoleRenderer", () => {
     });
 
     it("prints a pair of cities", () => {
-      expect(renderer(new ConsoleRenderer(9), defaultCards.I)).toStrictEqual([
+      expect(renderer(new ConsoleRenderer(9), defaultTiles.I)).toStrictEqual([
         "┏━━━━━━━━━━━━━━━━━━┓",
         "┃                  ┃",
         "┃                🏠┃",

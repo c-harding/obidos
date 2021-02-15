@@ -1,4 +1,4 @@
-import { defaultCards, defaultDrawPile } from "../../src/game/DefaultGame";
+import { defaultDrawPile, defaultTiles } from "../../src/game/DefaultGame";
 
 const UNIQUE_CARD_COUNT = 24;
 const DRAW_PILE_SIZE = 71;
@@ -6,11 +6,11 @@ const DRAW_PILE_SIZE = 71;
 describe("DefaultGame", () => {
   describe("defaultCards", () => {
     it("has the right number of tile types", () => {
-      expect(Object.values(defaultCards)).toHaveLength(UNIQUE_CARD_COUNT);
+      expect(Object.values(defaultTiles)).toHaveLength(UNIQUE_CARD_COUNT);
     });
 
     it("has no duplicates", () => {
-      expect(new Set(Object.values(defaultCards)).size).toBe(UNIQUE_CARD_COUNT);
+      expect(new Set(Object.values(defaultTiles)).size).toBe(UNIQUE_CARD_COUNT);
     });
   });
 

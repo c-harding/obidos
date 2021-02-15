@@ -1,5 +1,6 @@
-import type { Board, Position } from "@obidos/model/src/board/Board";
-import { defaultCards } from "@obidos/model/src/game/DefaultGame";
+import type { Position } from "@obidos/model/src/board/Board";
+import type BoardView from "@obidos/model/src/board/BoardView";
+import { defaultTiles } from "@obidos/model/src/game/DefaultGame";
 import {
   fillArray,
   generateArray,
@@ -161,7 +162,7 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
     ];
   }
 
-  static generateCorner(
+  private static generateCorner(
     topLeft: boolean,
     topRight: boolean,
     bottomLeft: boolean,
@@ -175,7 +176,7 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
     );
   }
 
-  renderBoard(board: Board, positions: readonly Position[] = []): string[] {
+  renderBoard(board: BoardView, positions: readonly Position[] = []): string[] {
     const minCol = Math.min(board.minCol, ...positions.map(([_row, col]) => col));
     const maxCol = Math.max(board.maxCol, ...positions.map(([_row, col]) => col + 1));
     const minRow = Math.min(board.minRow, ...positions.map(([row, _col]) => row));
@@ -264,7 +265,7 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
   }
 
   printAllDefaultCards(): void {
-    for (const [id, tile] of Object.entries(defaultCards)) {
+    for (const [id, tile] of Object.entries(defaultTiles)) {
       console.log(this.renderTile(tile, id).join("\n"));
     }
   }

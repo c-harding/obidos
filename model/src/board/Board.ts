@@ -4,13 +4,15 @@ import { outerWindow, range } from "../iteration";
 import MemoizedProp from "../memoizedProp";
 import RotatedTile from "../tile/RotatedTile";
 import { Side } from "../tile/Side";
-import type { Tile } from "../tile/Tile";
+import { Tile } from "../tile/Tile";
 import BidiArray from "./BidiArray";
+import type BoardView from "./BoardView";
 
 export type Position = readonly [row: number, col: number];
-export type PositionWithSides = readonly [row: number, col: number, side: Set<Side>];
+export type PositionWithSide = readonly [row: number, col: number, side: Side];
+export type PositionWithSides = readonly [row: number, col: number, sides: Set<Side>];
 
-export class Board {
+export class Board implements BoardView {
   private modifiableGrid: BidiArray<BidiArray<RotatedTile>>;
   constructor(initial: Tile) {
     this.modifiableGrid = new BidiArray(
@@ -110,12 +112,14 @@ export class Board {
 
   *freeLocationsForTile(tile: Tile): Generator<PositionWithSides> {
     for (const [row, col] of this.freeLocations) {
-      const sides = Side.values.filter((side) =>
-        this.pieceFits(row, col, new RotatedTile(tile, side)),
+      const sides = new Set(
+        wu(Tile.uniqueRotations(tile)).filter((side) =>
+          this.pieceFits(row, col, new RotatedTile(tile, side)),
+        ),
       );
 
-      if (sides.length !== 0) {
-        yield [row, col, new Set(sides)];
+      if (sides.size !== 0) {
+        yield [row, col, sides];
       }
     }
   }

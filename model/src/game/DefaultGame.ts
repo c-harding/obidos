@@ -5,7 +5,7 @@ import { Tile } from "../tile/Tile";
 
 // Source:
 // https://static1.squarespace.com/static/53ec790ae4b0396cbd14d8a1/t/5979af2f893fc0424c4691f9/1501146946692/Carcassonne-board-game-rules.pdf
-export const defaultCards = {
+export const defaultTiles = {
   A: Tile().cloister().road(Side.SOUTH).build(),
   B: Tile().cloister().build(),
   C: Tile().pendantCity(Side.NORTH, Side.EAST, Side.SOUTH, Side.WEST).build(),
@@ -32,7 +32,7 @@ export const defaultCards = {
   X: Tile().road(Side.NORTH).road(Side.EAST).road(Side.SOUTH).road(Side.WEST).build(),
 };
 
-export const startingCard = defaultCards.D;
+export const startingTile = defaultTiles.D;
 
 function copies<T>(...args: [T, number][]) {
   const array = new FrozenArrayBuilder<T>();
@@ -43,28 +43,30 @@ function copies<T>(...args: [T, number][]) {
 }
 
 export const defaultDrawPile = copies<Tile>(
-  [defaultCards.A, 2],
-  [defaultCards.B, 4],
-  [defaultCards.C, 1],
-  [defaultCards.D, 3],
-  [defaultCards.E, 5],
-  [defaultCards.F, 2],
-  [defaultCards.G, 1],
-  [defaultCards.H, 3],
-  [defaultCards.I, 2],
-  [defaultCards.J, 3],
-  [defaultCards.K, 3],
-  [defaultCards.L, 3],
-  [defaultCards.M, 2],
-  [defaultCards.N, 3],
-  [defaultCards.O, 2],
-  [defaultCards.P, 3],
-  [defaultCards.Q, 1],
-  [defaultCards.R, 3],
-  [defaultCards.S, 2],
-  [defaultCards.T, 1],
-  [defaultCards.U, 8],
-  [defaultCards.V, 9],
-  [defaultCards.W, 4],
-  [defaultCards.X, 1],
+  [defaultTiles.A, 2],
+  [defaultTiles.B, 4],
+  [defaultTiles.C, 1],
+  [defaultTiles.D, 3],
+  [defaultTiles.E, 5],
+  [defaultTiles.F, 2],
+  [defaultTiles.G, 1],
+  [defaultTiles.H, 3],
+  [defaultTiles.I, 2],
+  [defaultTiles.J, 3],
+  [defaultTiles.K, 3],
+  [defaultTiles.L, 3],
+  [defaultTiles.M, 2],
+  [defaultTiles.N, 3],
+  [defaultTiles.O, 2],
+  [defaultTiles.P, 3],
+  [defaultTiles.Q, 1],
+  [defaultTiles.R, 3],
+  [defaultTiles.S, 2],
+  [defaultTiles.T, 1],
+  [defaultTiles.U, 8],
+  [defaultTiles.V, 9],
+  [defaultTiles.W, 4],
+  [defaultTiles.X, 1],
 );
+
+export const meeplePerPlayer = 0;
