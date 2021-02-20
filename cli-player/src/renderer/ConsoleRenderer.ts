@@ -162,9 +162,9 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
       ([side1, side2]) => walls.has(side1) && walls.has(side2),
     );
     if (neighbours) return neighbours;
-    const firstSide = Side.values.find((side) => walls.has(side));
+    const [firstSide] = walls;
     if (firstSide) return [firstSide];
-    return [];
+    else return [];
   }
 
   private getPositionCoordinate(sides: Side[], start: Side, end: Side): number {

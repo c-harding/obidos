@@ -1,12 +1,14 @@
 import type { PositionWithSide, PositionWithSides } from "@obidos/model/src/board/Board";
 import type BoardView from "@obidos/model/src/board/BoardView";
+import { range } from "@obidos/model/src/iteration";
 import type Player from "@obidos/model/src/player/Player";
 import type PlayerFactory from "@obidos/model/src/player/PlayerFactory";
 import type PlayerView from "@obidos/model/src/player/PlayerView";
-import { Side } from "@obidos/model/src/tile/Side";
+import RotatedTile from "@obidos/model/src/tile/RotatedTile";
+import type { Side } from "@obidos/model/src/tile/Side";
 import type { Tile } from "@obidos/model/src/tile/Tile";
-import type { Choice } from "prompts";
 import prompts from "prompts";
+import wu from "wu";
 
 import ConsoleRenderer from "../renderer/ConsoleRenderer";
 
@@ -21,6 +23,35 @@ export class CliPlayer implements Player {
 
   constructor(private readonly player: PlayerView, private readonly board: BoardView) {
     this.renderer = new ConsoleRenderer(7);
+  }
+
+  private perRow(count: number): number {
+    const scale = this.renderer.scale;
+    const tileSize = 2 * scale + 4; // border plus gap
+    const terminalCols = process.stdout.columns ?? 0;
+
+    const max = Math.min(count, Math.floor(terminalCols / tileSize));
+    const rowCount = Math.ceil(count / max);
+    for (const tileCols of range(max - 1, 0, -1)) {
+      if (Math.ceil(count / tileCols) > rowCount) return tileCols + 1;
+    }
+    return 1;
+  }
+
+  private printRotations(tile: Tile, choices: Side[]): void {
+    const perRow = this.perRow(choices.length);
+
+    const tileSize = 2 * this.renderer.scale + 2;
+
+    for (const row of wu(choices).chunk(perRow)) {
+      const grids = row.map((rotation, i) => [
+        "",
+        ...this.renderer.renderTile(new RotatedTile(tile, rotation), `${i + 1}`),
+      ]);
+      for (const i of range(grids[0].length)) {
+        console.log(grids.map((grid) => grid[i].padEnd(tileSize)).join("  "));
+      }
+    }
   }
 
   async makeMove(tile: Tile, validMoves: PositionWithSides[]): Promise<PositionWithSide> {
@@ -42,29 +73,24 @@ export class CliPlayer implements Player {
       })
     ).chosenPosition;
 
-    if (chosenPosition === undefined) throw new Error("No position chosen");
+    if (!chosenPosition) throw new Error("No position chosen");
 
-    const [row, col, sides] = validMoves[chosenPosition - 1];
-
-    const rotationChoices: { title: string; value: Side | string }[] = [
-      { title: "As displayed", value: Side.NORTH },
-      { title: "Rotated 90°", value: Side.EAST },
-      { title: "Rotated 180°", value: Side.SOUTH },
-      { title: "Rotated 270°", value: Side.WEST },
-    ].filter(({ value }) => sides.has(value));
+    const [row, col, [...sides]] = validMoves[chosenPosition - 1];
 
     let side: Side;
-    if (rotationChoices.length > 1) {
+    if (sides.length > 1) {
+      this.printRotations(tile, sides);
       side = (
         await prompts({
-          type: "select",
+          type: "number",
           name: "side",
-          message: "Which way around do you choose?",
-          choices: rotationChoices as Choice[],
+          message: "Which rotation do you choose?",
+          min: 1,
+          max: sides.length,
         })
       ).side;
 
-      if (side === undefined) throw new Error("No side chosen");
+      if (!side) return this.makeMove(tile, validMoves);
     } else {
       [side] = sides;
     }
