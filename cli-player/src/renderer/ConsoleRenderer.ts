@@ -28,6 +28,22 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
     return Math.hypot(x - xx, y - yy);
   }
 
+  /**
+   * Compute the average of the sides given (i.e. the corner between them), and calculate the
+   * distance between this point and the coordinates given.
+   *
+   * If metric is 2, the Euclidean distance will be used, whereas 1 would be Manhattan distance.
+   */
+  private static distanceToCorner(sides: Side[], y: number, x: number, metric = 2) {
+    const sideCoordinates = sides.map((side) => this.coordinatesForSide[side]);
+    const xx = sideCoordinates.reduce((acc, b) => acc + b[0], 0) / sideCoordinates.length;
+    const yy = sideCoordinates.reduce((acc, b) => acc + b[1], 0) / sideCoordinates.length;
+    return Math.pow(
+      Math.pow(Math.abs(x - xx), metric) + Math.pow(Math.abs(y - yy), metric),
+      1 / metric,
+    );
+  }
+
   constructor(readonly scale: number) {}
 
   private get midway() {
@@ -115,13 +131,9 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
           }
         }
       } else if (sides.length === 2 && neighbours(sides[0], sides[1])) {
+        const otherSides = Side.values.filter((side) => !sides.includes(side));
         for (const [y, x, setter] of eachCanvasCell()) {
-          if (
-            Math.min(...sides.map((side) => ConsoleRenderer.distanceToSide(side, y, x))) <
-            Math.min(
-              ...missingSides.map((side) => ConsoleRenderer.distanceToSide(side, y, x)),
-            )
-          ) {
+          if (ConsoleRenderer.distanceToCorner(otherSides, y, x, 1.25) > 1) {
             setter(citySymbol);
           }
         }
