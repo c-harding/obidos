@@ -13,7 +13,7 @@ import { Side } from "@obidos/model/src/tile/Side";
 import type { Tile } from "@obidos/model/src/tile/Tile";
 import { TileRoad, TileRoadType } from "@obidos/model/src/tile/TileRoad";
 import TileSide from "@obidos/model/src/tile/TileSide";
-import { repeat, zip } from "wu";
+import { cycle, repeat, zip } from "wu";
 
 export default class ConsoleRenderer implements TileRenderer<string[]> {
   private static coordinatesForSide: Record<Side, [number, number]> = Object.freeze({
@@ -136,8 +136,36 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
           }
         }
       }
+
+      if (city.pendant) {
+        this.addPendant(canvas, city.walls);
+      }
     }
     return canvas.map((row) => row.join(""));
+  }
+
+  private pendantCorner(walls: Set<Side>): Side[] {
+    const corners = zip(Side.values, cycle(Side.values).drop(1));
+    const neighbours = corners.find(
+      ([side1, side2]) => walls.has(side1) && walls.has(side2),
+    );
+    if (neighbours) return neighbours;
+    const firstSide = Side.values.find((side) => walls.has(side));
+    if (firstSide) return [firstSide];
+    return [];
+  }
+
+  private getPositionCoordinate(sides: Side[], start: Side, end: Side): number {
+    if (sides.includes(start)) return 0;
+    if (sides.includes(end)) return this.scale - 1;
+    return this.midway;
+  }
+
+  private addPendant(canvas: string[][], walls: Set<Side>) {
+    const sides = this.pendantCorner(walls);
+    const y = this.getPositionCoordinate(sides, Side.NORTH, Side.SOUTH);
+    const x = this.getPositionCoordinate(sides, Side.WEST, Side.EAST);
+    canvas[y][x] = "🛡️ ";
   }
 
   private repeatStringWithMidway(edgeSymbol: string, midwaySymbol: string): string {
