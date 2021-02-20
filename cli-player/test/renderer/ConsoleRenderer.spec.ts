@@ -62,10 +62,10 @@ describe("ConsoleRenderer", () => {
     it("prints a single two-sided city", () => {
       expect(renderer(new ConsoleRenderer(7), defaultTiles.M)).toStrictEqual([
         "┏━━━━━━━━━━━━━━┓",
-        "┃🏠🏠🏠🏠🏠🏠  ┃",
+        "┃🛡️ 🏠🏠🏠🏠🏠  ┃",
         "┃🏠🏠🏠🏠🏠    ┃",
-        "┃🏠🏠🏠🏠      ┃",
         "┃🏠🏠🏠        ┃",
+        "┃🏠🏠          ┃",
         "┃🏠🏠          ┃",
         "┃🏠            ┃",
         "┃              ┃",
@@ -73,14 +73,14 @@ describe("ConsoleRenderer", () => {
       ]);
     });
 
-    it("prints a long thin city", () => {
+    it("prints a long thin city with a pendant", () => {
       expect(renderer(new ConsoleRenderer(9), defaultTiles.F)).toStrictEqual([
         "┏━━━━━━━━━━━━━━━━━━┓",
         "┃🏠              🏠┃",
         "┃🏠🏠          🏠🏠┃",
         "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
         "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
-        "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
+        "┃🏠🏠🏠🏠🏠🏠🏠🏠🛡️ ┃",
         "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
         "┃🏠🏠🏠🏠🏠🏠🏠🏠🏠┃",
         "┃🏠🏠          🏠🏠┃",
@@ -152,8 +152,8 @@ describe("ConsoleRenderer", () => {
         "┣━━━━━━┥┝━━━━━━╋━━━━━━━━━━━━━━┫",
         "┃      ││      ┃  🏠🏠🏠🏠🏠🏠┃",
         "┃      ││      ┃    🏠🏠🏠🏠🏠┃",
-        "┃      ││      ┃      🏠🏠🏠🏠┃",
-        "┃      ⛪      ┃        🏠🏠🏠┃",
+        "┃      ││      ┃        🏠🏠🏠┃",
+        "┃      ⛪      ┃          🏠🏠┃",
         "┃              ┃          🏠🏠┃",
         "┃              ┃            🏠┃",
         "┃              ┃              ┃",
@@ -206,8 +206,8 @@ describe("ConsoleRenderer", () => {
         "               ┣━━━━━━┥┝━━━━━━╋━━━━━━━━━━━━━━┫",
         "               ┃      ││      ┃  🏠🏠🏠🏠🏠🏠┃",
         "               ┃      ││      ┃    🏠🏠🏠🏠🏠┃",
-        "               ┃      ││      ┃      🏠🏠🏠🏠┃",
-        "       3       ┃      ⛪      ┃        🏠🏠🏠┃",
+        "               ┃      ││      ┃        🏠🏠🏠┃",
+        "       3       ┃      ⛪      ┃          🏠🏠┃",
         "               ┃              ┃          🏠🏠┃",
         "               ┃              ┃            🏠┃",
         "               ┃              ┃              ┃",

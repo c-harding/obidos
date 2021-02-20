@@ -36,8 +36,8 @@ export default class ConsoleRenderer implements TileRenderer<string[]> {
    */
   private static distanceToCorner(sides: Side[], y: number, x: number, metric = 2) {
     const sideCoordinates = sides.map((side) => this.coordinatesForSide[side]);
-    const xx = sideCoordinates.reduce((acc, b) => acc + b[0], 0) / sideCoordinates.length;
-    const yy = sideCoordinates.reduce((acc, b) => acc + b[1], 0) / sideCoordinates.length;
+    const yy = sideCoordinates.reduce((acc, b) => acc + b[0], 0) / sideCoordinates.length;
+    const xx = sideCoordinates.reduce((acc, b) => acc + b[1], 0) / sideCoordinates.length;
     return Math.pow(
       Math.pow(Math.abs(x - xx), metric) + Math.pow(Math.abs(y - yy), metric),
       1 / metric,
