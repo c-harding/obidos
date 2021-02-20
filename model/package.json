@@ -26,7 +26,6 @@
         "coverage": "cd .. && codecov -f model/.coverage/lcov.info -F model",
         "typecheck": "tsc --noEmit",
         "eslint": "eslint --fix src/**/*.ts test/**/*.ts",
-        "lint": "yarn eslint --quiet && prettier src/**/*.ts test/**/*.ts -w && yarn eslint",
-        "print-deck": "ts-node src/printer/ConsoleRenderer.ts"
+        "lint": "yarn eslint --quiet && prettier src/**/*.ts test/**/*.ts -w && yarn eslint"
     }
 }

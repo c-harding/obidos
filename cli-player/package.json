@@ -30,6 +30,7 @@
         "typecheck": "tsc --noEmit",
         "eslint": "eslint --fix src/**/*.ts test/**/*.ts",
         "lint": "yarn eslint && prettier src/**/*.ts test/**/*.ts -w && yarn eslint",
-        "cli-game": "ts-node src/game/CliGame.ts"
+        "cli-game": "ts-node src/game/CliGame.ts",
+        "print-deck": "ts-node src/renderer/ConsoleRenderer.ts"
     }
 }
