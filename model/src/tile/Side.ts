@@ -1,5 +1,5 @@
 export enum Side {
-  NORTH,
+  NORTH = 1,
   EAST,
   SOUTH,
   WEST,
@@ -9,11 +9,17 @@ export namespace Side {
   export const values = Object.freeze([Side.NORTH, Side.EAST, Side.SOUTH, Side.WEST]);
 
   export function rotate(basis: Side, by: Side): Side {
-    return (basis + by) % Side.values.length;
+    const basisIndex = Side.values.indexOf(basis);
+    const byNumber = Side.values.indexOf(by);
+    const count = Side.values.length;
+    return Side.values[(basisIndex + byNumber) % count];
   }
 
   export function unrotate(basis: Side, by: Side): Side {
-    return (basis + Side.values.length - by) % Side.values.length;
+    const basisIndex = Side.values.indexOf(basis);
+    const byNumber = Side.values.indexOf(by);
+    const count = Side.values.length;
+    return Side.values[(basisIndex + count - byNumber) % count];
   }
 
   export function opposite(basis: Side): Side {
