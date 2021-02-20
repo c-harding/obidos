@@ -19,4 +19,17 @@ export namespace Side {
   export function opposite(basis: Side): Side {
     return rotate(basis, Side.SOUTH);
   }
+
+  export function string(side: Side): string {
+    switch (side) {
+      case Side.NORTH:
+        return "Side.NORTH";
+      case Side.EAST:
+        return "Side.EAST";
+      case Side.SOUTH:
+        return "Side.SOUTH";
+      case Side.WEST:
+        return "Side.WEST";
+    }
+  }
 }

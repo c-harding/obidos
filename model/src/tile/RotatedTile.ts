@@ -60,4 +60,8 @@ export default class RotatedTile implements Tile {
   private unrotate(side: Side): Side {
     return Side.unrotate(side, this.orientation);
   }
+
+  toString(): string {
+    return `new RotatedTile(\n  ${this.tile},\n  ${Side.string(this.orientation)}\n)`;
+  }
 }

@@ -62,4 +62,52 @@ describe("RotatedTile", () => {
     expect(rotatedRoadAndCity.cities).toBe(rotatedRoadAndCity.cities);
     expect(rotatedRoadAndCity.roads).toBe(rotatedRoadAndCity.roads);
   });
+
+  it.each([
+    ["a blank tile", Tile().build(), "Tile().build()"],
+    ["a cloister tile", Tile().cloister().build(), "Tile().cloister().build()"],
+    [
+      "a road tile",
+      Tile().throughRoad(Side.NORTH, Side.EAST).build(),
+      "Tile().throughRoad(Side.NORTH, Side.EAST).build()",
+    ],
+    [
+      "a city and road tile",
+      Tile().city(Side.SOUTH).throughRoad(Side.NORTH, Side.EAST).build(),
+      "Tile().city(Side.SOUTH).throughRoad(Side.NORTH, Side.EAST).build()",
+    ],
+    [
+      "a city and road tile declared in reverse",
+      Tile().throughRoad(Side.NORTH, Side.EAST).city(Side.SOUTH).build(),
+      "Tile().city(Side.SOUTH).throughRoad(Side.NORTH, Side.EAST).build()",
+    ],
+    [
+      "a rotated tile",
+      new RotatedTile(
+        Tile().pendantCity(Side.NORTH, Side.EAST, Side.WEST).road(Side.SOUTH).build(),
+        Side.SOUTH,
+      ),
+      [
+        "new RotatedTile(",
+        "  Tile().pendantCity(Side.NORTH, Side.EAST, Side.WEST).road(Side.SOUTH).build(),",
+        "  Side.SOUTH",
+        ")",
+      ].join("\n"),
+    ],
+    [
+      "a tile rotated twice",
+      new RotatedTile(
+        new RotatedTile(Tile().cloister().road(Side.SOUTH).build(), Side.WEST),
+        Side.SOUTH,
+      ),
+      [
+        "new RotatedTile(",
+        "  Tile().cloister().road(Side.SOUTH).build(),",
+        "  Side.EAST",
+        ")",
+      ].join("\n"),
+    ],
+  ])("converts %s to a string correctly", (_desc, tile, representation) => {
+    expect(tile.toString()).toBe(representation);
+  });
 });

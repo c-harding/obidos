@@ -13,6 +13,7 @@ export interface Tile {
   readonly cloister: boolean;
 
   side(side: Side): TileSide;
+  toString(): string;
 }
 
 /**
@@ -38,6 +39,35 @@ export namespace Tile {
       } else if (this.cities.some((city) => city.walls.has(side))) {
         return TileSide.CITY;
       } else return TileSide.FIELD;
+    }
+
+    toString(): string {
+      const builder = new FrozenArrayBuilder<string>();
+      builder.push("Tile()");
+
+      if (this.cloister) builder.push("cloister()");
+
+      for (const city of this.cities) {
+        if (city.pendant) {
+          builder.push(`pendantCity(${[...city.walls].map(Side.string).join(", ")})`);
+        } else {
+          builder.push(`city(${[...city.walls].map(Side.string).join(", ")})`);
+        }
+      }
+
+      for (const road of this.roads) {
+        if (road.type === TileRoadType.THROUGH) {
+          builder.push(
+            `throughRoad(${TileRoad.toSides(road).map(Side.string).join(", ")})`,
+          );
+        } else {
+          builder.push(`road(${Side.string(road.source)})`);
+        }
+      }
+
+      builder.push("build()");
+
+      return builder.build().join(".");
     }
   }
 
