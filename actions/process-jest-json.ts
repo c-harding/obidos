@@ -32,12 +32,66 @@ async function combineAnnotations(
   ).flat();
 }
 
-function getOutputText(results: FormattedTestResults[]) {
-  const entries = results
-    .flatMap((result) => result.testResults)
-    .map((r) => r.message)
-    .filter(Boolean);
-  return "```\n" + entries.join("\n").trimRight() + "\n```";
+class Tree {
+  entries: Tree[] = [];
+
+  constructor(readonly label: string) {}
+
+  get last(): Tree | undefined {
+    return this.entries[this.entries.length - 1];
+  }
+
+  add(value: string, path: string[] = []): this {
+    if (path.length === 0) {
+      this.entries.push(new Tree(value));
+    } else {
+      const [next, ...rest] = path;
+      if (next === this.last?.label) this.last.add(value, rest);
+      else this.entries.push(new Tree(next).add(value, rest));
+    }
+    return this;
+  }
+
+  toString(): string {
+    return this.entries
+      .map((entry) => `${entry}\n${entry.toString().replace("\n", "\n  ")}`)
+      .join("\n");
+  }
+}
+
+function listToTree(results: FormattedTestResults): Tree {
+  const tree = new Tree("");
+  for (const test of results.testResults) {
+    const subtree = tree.add(test.name);
+    for (const assertion of test.assertionResults) {
+      const testSuffix =
+        assertion.status === "passed" ? "" : ` (${assertion.status.toUpperCase()})`;
+      const testTree = subtree.add(
+        assertion.title + testSuffix,
+        assertion.ancestorTitles,
+      );
+      for (const message of assertion.failureMessages ?? []) testTree.add(message);
+    }
+  }
+  return tree;
+}
+
+function getOutputText(results: FormattedTestResults[], success: boolean) {
+  let failureBlock = "";
+  if (!success) {
+    const entries = results
+      .flatMap((result) => result.testResults)
+      .map((r) => r.message)
+      .filter(Boolean);
+    failureBlock = "```\n" + entries.join("\n").trimRight() + "\n```";
+  }
+  const fullTestOutput = results.map(listToTree).join("\n\n");
+  return (
+    "<details><summary>Full list of tests</summary>\n\n```" +
+    fullTestOutput +
+    "```\n\n</details>\n\n" +
+    failureBlock
+  );
 }
 
 const main = ([, , ...paths]: string[]) =>
@@ -82,7 +136,7 @@ const main = ([, , ...paths]: string[]) =>
       conclusion: success ? "success" : "failure",
       output: {
         title: success ? "Jest tests passed" : "Jest tests failed",
-        text: success ? "" : getOutputText(jestFiles),
+        text: getOutputText(jestFiles, success),
         summary: summaryText,
         annotations: await annotationsPromise,
       },

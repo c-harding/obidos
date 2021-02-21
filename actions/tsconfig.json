@@ -10,7 +10,8 @@
         ],
         "types": [
             "node"
-        ]
+        ],
+        "target": "es5"
     },
     "include": [
         "*.ts",
