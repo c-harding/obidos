@@ -1,6 +1,6 @@
 import wu, { zip } from "wu";
 
-import FrozenArrayBuilder from "../board/FrozenArrayBuilder";
+import FrozenArrayBuilder from "@obidos/model/src/board/FrozenArrayBuilder";
 import RotatedTile from "./RotatedTile";
 import { Side } from "./Side";
 import type { TileCity } from "./TileCity";

@@ -1,4 +1,4 @@
-import FrozenArrayBuilder from "../../src/board/FrozenArrayBuilder";
+import FrozenArrayBuilder from "@obidos/model/src/board/FrozenArrayBuilder";
 
 describe("FrozenArrayBuilder", () => {
   it("builds an empty array", () => {

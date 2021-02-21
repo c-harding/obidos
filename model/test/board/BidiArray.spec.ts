@@ -1,4 +1,4 @@
-import BidiArray from "../../src/board/BidiArray";
+import BidiArray from "@obidos/model/src/board/BidiArray";
 
 describe("BidiArray", () => {
   it("starts with the correct min and max when empty", () => {

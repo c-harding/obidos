@@ -1,4 +1,4 @@
-import { defaultDrawPile, defaultTiles } from "../../src/game/DefaultGame";
+import { defaultDrawPile, defaultTiles } from "@obidos/model/src/game/DefaultGame";
 
 const UNIQUE_CARD_COUNT = 24;
 const DRAW_PILE_SIZE = 71;

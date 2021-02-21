@@ -1,9 +1,9 @@
-import RotatedTile from "../../src/tile/RotatedTile";
-import { Side } from "../../src/tile/Side";
-import { Tile } from "../../src/tile/Tile";
-import type { TileCity } from "../../src/tile/TileCity";
-import type { TileRoad } from "../../src/tile/TileRoad";
-import { TileRoadType } from "../../src/tile/TileRoad";
+import RotatedTile from "@obidos/model/src/tile/RotatedTile";
+import { Side } from "@obidos/model/src/tile/Side";
+import { Tile } from "@obidos/model/src/tile/Tile";
+import type { TileCity } from "@obidos/model/src/tile/TileCity";
+import type { TileRoad } from "@obidos/model/src/tile/TileRoad";
+import { TileRoadType } from "@obidos/model/src/tile/TileRoad";
 
 describe("RotatedTile", () => {
   const cityNES = Tile().city(Side.NORTH, Side.EAST, Side.SOUTH).build();

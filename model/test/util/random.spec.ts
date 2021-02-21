@@ -1,5 +1,5 @@
-import { range } from "../../src/util/iteration";
-import { shuffle } from "../../src/util/random";
+import { range } from "@obidos/model/src/util/iteration";
+import { shuffle } from "@obidos/model/src/util/random";
 
 describe("random", () => {
   describe("shuffle", () => {

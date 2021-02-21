@@ -1,5 +1,5 @@
-import type BoardView from "../board/BoardView";
-import type PlayerView from "../player/PlayerView";
+import type BoardView from "@obidos/model/src/board/BoardView";
+import type PlayerView from "@obidos/model/src/player/PlayerView";
 
 export default interface GameView {
   readonly board: BoardView;

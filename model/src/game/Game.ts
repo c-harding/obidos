@@ -1,4 +1,4 @@
-import type PlayerView from "../player/PlayerView";
+import type PlayerView from "@obidos/model/src/player/PlayerView";
 
 interface Game {
   start(): Promise<Set<PlayerView>>;

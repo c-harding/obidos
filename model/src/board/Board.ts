@@ -1,10 +1,10 @@
 import wu, { zip } from "wu";
 
-import MemoizedProp from "../util/memoizedProp";
-import RotatedTile from "../tile/RotatedTile";
-import { Side } from "../tile/Side";
-import { Tile } from "../tile/Tile";
-import { outerWindow, range } from "../util/iteration";
+import RotatedTile from "@obidos/model/src/tile/RotatedTile";
+import { Side } from "@obidos/model/src/tile/Side";
+import { Tile } from "@obidos/model/src/tile/Tile";
+import { outerWindow, range } from "@obidos/model/src/util/iteration";
+import MemoizedProp from "@obidos/model/src/util/memoizedProp";
 import BidiArray from "./BidiArray";
 import type BoardView from "./BoardView";
 

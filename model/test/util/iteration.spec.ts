@@ -7,7 +7,7 @@ import {
   range,
   repeatString,
   trimArray,
-} from "../../src/util/iteration";
+} from "@obidos/model/src/util/iteration";
 
 describe("iteration", () => {
   describe("range", () => {

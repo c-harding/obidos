@@ -1,6 +1,6 @@
-import type { PositionWithSide, PositionWithSides } from "../board/Board";
-import type MoveView from "../board/MoveView";
-import type { Tile } from "../tile/Tile";
+import type { PositionWithSide, PositionWithSides } from "@obidos/model/src/board/Board";
+import type MoveView from "@obidos/model/src/board/MoveView";
+import type { Tile } from "@obidos/model/src/tile/Tile";
 import type PlayerView from "./PlayerView";
 
 export default interface Player {

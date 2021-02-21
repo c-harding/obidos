@@ -1,5 +1,5 @@
-import type RotatedTile from "../tile/RotatedTile";
-import type { Tile } from "../tile/Tile";
+import type RotatedTile from "@obidos/model/src/tile/RotatedTile";
+import type { Tile } from "@obidos/model/src/tile/Tile";
 import type BidiArray from "./BidiArray";
 import type { Position, PositionWithSides } from "./Board";
 

@@ -1,7 +1,7 @@
-import { Board } from "../../src/board/Board";
-import RotatedTile from "../../src/tile/RotatedTile";
-import { Side } from "../../src/tile/Side";
-import { Tile } from "../../src/tile/Tile";
+import { Board } from "@obidos/model/src/board/Board";
+import RotatedTile from "@obidos/model/src/tile/RotatedTile";
+import { Side } from "@obidos/model/src/tile/Side";
+import { Tile } from "@obidos/model/src/tile/Tile";
 
 describe("Board", () => {
   const blankTile = Tile().build();
