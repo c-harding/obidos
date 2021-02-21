@@ -1,6 +1,8 @@
 import { context, getOctokit } from "@actions/github";
 import { readFile } from "fs/promises";
 
+import * as core from "@actions/core";
+import { resolve } from "path";
 /** Get all the keys of an object such that the value is of the given type. */
 export type KeysOfType<T, TProp> = NonNullable<
   {
@@ -30,8 +32,6 @@ export function count(n: number, singular: string, plural?: string): string {
 export async function readJsonFile<T>(path: string): Promise<T> {
   return JSON.parse(await readFile(path, "utf-8"));
 }
-import * as core from "@actions/core";
-import { resolve } from "path";
 
 export interface CreateCheckOutput {
   title: string;
