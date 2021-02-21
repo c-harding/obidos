@@ -1,6 +1,7 @@
 import prompts from "prompts";
 import wu from "wu";
 
+import ConsoleRenderer from "@obidos/cli-player/src/renderer/ConsoleRenderer";
 import type { PositionWithSide, PositionWithSides } from "@obidos/model/src/board/Board";
 import type BoardView from "@obidos/model/src/board/BoardView";
 import type Player from "@obidos/model/src/player/Player";
@@ -10,7 +11,6 @@ import RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import type { Side } from "@obidos/model/src/tile/Side";
 import type { Tile } from "@obidos/model/src/tile/Tile";
 import { range } from "@obidos/model/src/util/iteration";
-import ConsoleRenderer from "../renderer/ConsoleRenderer";
 
 export class CliPlayer implements Player {
   static readonly factory: PlayerFactory = {

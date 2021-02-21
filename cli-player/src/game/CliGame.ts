@@ -1,7 +1,7 @@
 import wu from "wu";
 
+import { CliPlayer } from "@obidos/cli-player/src/player/CliPlayer";
 import LocalGame from "@obidos/model/src/game/LocalGame";
-import { CliPlayer } from "../player/CliPlayer";
 
 async function runCliGame(): Promise<void> {
   const game = new LocalGame([{ factory: CliPlayer.factory, name: "CLI Player" }]);

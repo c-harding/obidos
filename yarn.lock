@@ -2136,6 +2136,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-import-alias@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "eslint-plugin-import-alias@npm:1.2.0"
+  checksum: 5acfd51c8944a070d1cff8eb7f8c59bc2e76c5b37f4f6d9c3b34ef3fc82e274f00a023592bb83b1f3f39a813d55002033ac9f4638940889b0ddecb937704da51
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-import@npm:^2.22.1":
   version: 2.22.1
   resolution: "eslint-plugin-import@npm:2.22.1"
@@ -5234,6 +5241,7 @@ fsevents@^2.1.2:
     eslint-config-prettier: ^7.2.0
     eslint-import-resolver-node: ^0.3.4
     eslint-plugin-import: ^2.22.1
+    eslint-plugin-import-alias: ^1.2.0
     eslint-plugin-simple-import-sort: ^7.0.0
     eslint-plugin-unused-imports: ^1.1.0
     prettier: ^2.2.1
