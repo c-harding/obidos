@@ -1,4 +1,4 @@
-import type { Side } from "./Side";
+import type { Side } from "@obidos/model/src/tile/Side";
 
 /**
  * A TileRoad consists of either a road from one side to another or a road from a side or a road

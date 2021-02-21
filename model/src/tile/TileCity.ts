@@ -1,4 +1,4 @@
-import type { Side } from "./Side";
+import type { Side } from "@obidos/model/src/tile/Side";
 
 /**
  * A TileCity consists of a list of tiles, and optionally a pendant.

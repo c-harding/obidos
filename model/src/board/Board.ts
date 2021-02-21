@@ -1,12 +1,12 @@
 import wu, { zip } from "wu";
 
+import BidiArray from "@obidos/model/src/board/BidiArray";
+import type BoardView from "@obidos/model/src/board/BoardView";
 import RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import { Side } from "@obidos/model/src/tile/Side";
 import { Tile } from "@obidos/model/src/tile/Tile";
 import { outerWindow, range } from "@obidos/model/src/util/iteration";
 import MemoizedProp from "@obidos/model/src/util/memoizedProp";
-import BidiArray from "./BidiArray";
-import type BoardView from "./BoardView";
 
 export type Position = readonly [row: number, col: number];
 export type PositionWithSide = readonly [row: number, col: number, side: Side];

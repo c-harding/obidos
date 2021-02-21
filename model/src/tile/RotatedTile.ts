@@ -1,9 +1,9 @@
-import { Side } from "./Side";
-import type { Tile } from "./Tile";
-import type { TileCity } from "./TileCity";
-import type { TileRoad } from "./TileRoad";
-import { TileRoadType } from "./TileRoad";
-import type TileSide from "./TileSide";
+import { Side } from "@obidos/model/src/tile/Side";
+import type { Tile } from "@obidos/model/src/tile/Tile";
+import type { TileCity } from "@obidos/model/src/tile/TileCity";
+import type { TileRoad } from "@obidos/model/src/tile/TileRoad";
+import { TileRoadType } from "@obidos/model/src/tile/TileRoad";
+import type TileSide from "@obidos/model/src/tile/TileSide";
 
 export default class RotatedTile implements Tile {
   constructor(

@@ -3,14 +3,18 @@ import wu from "wu";
 import type { PositionWithSides } from "@obidos/model/src/board/Board";
 import { Board } from "@obidos/model/src/board/Board";
 import type MoveView from "@obidos/model/src/board/MoveView";
+import {
+  defaultDrawPile,
+  meeplePerPlayer,
+  startingTile,
+} from "@obidos/model/src/game/DefaultGame";
+import type Game from "@obidos/model/src/game/Game";
 import type Player from "@obidos/model/src/player/Player";
 import type PlayerBlueprint from "@obidos/model/src/player/PlayerBlueprint";
 import type PlayerView from "@obidos/model/src/player/PlayerView";
 import RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import type { Tile } from "@obidos/model/src/tile/Tile";
 import { shuffle } from "@obidos/model/src/util/random";
-import { defaultDrawPile, meeplePerPlayer, startingTile } from "./DefaultGame";
-import type Game from "./Game";
 
 export default class LocalGame implements Game {
   private playerStates: PlayerState[];

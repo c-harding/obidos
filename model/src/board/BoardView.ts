@@ -1,7 +1,7 @@
+import type BidiArray from "@obidos/model/src/board/BidiArray";
+import type { Position, PositionWithSides } from "@obidos/model/src/board/Board";
 import type RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import type { Tile } from "@obidos/model/src/tile/Tile";
-import type BidiArray from "./BidiArray";
-import type { Position, PositionWithSides } from "./Board";
 
 export default interface BoardView {
   readonly grid: BidiArray.Readonly<BidiArray.Readonly<RotatedTile>>;

@@ -1,11 +1,11 @@
 import wu, { zip } from "wu";
 
 import FrozenArrayBuilder from "@obidos/model/src/board/FrozenArrayBuilder";
-import RotatedTile from "./RotatedTile";
-import { Side } from "./Side";
-import type { TileCity } from "./TileCity";
-import { TileRoad, TileRoadType } from "./TileRoad";
-import TileSide from "./TileSide";
+import RotatedTile from "@obidos/model/src/tile/RotatedTile";
+import { Side } from "@obidos/model/src/tile/Side";
+import type { TileCity } from "@obidos/model/src/tile/TileCity";
+import { TileRoad, TileRoadType } from "@obidos/model/src/tile/TileRoad";
+import TileSide from "@obidos/model/src/tile/TileSide";
 
 export interface Tile {
   readonly cities: readonly TileCity[];

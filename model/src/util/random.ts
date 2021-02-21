@@ -1,4 +1,4 @@
-import { range } from "./iteration";
+import { range } from "@obidos/model/src/util/iteration";
 
 /**
  * Fisher-Yates shuffle algorithm, in-place

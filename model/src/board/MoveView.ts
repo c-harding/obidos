@@ -1,6 +1,6 @@
+import type { Position } from "@obidos/model/src/board/Board";
 import type PlayerView from "@obidos/model/src/player/PlayerView";
 import type RotatedTile from "@obidos/model/src/tile/RotatedTile";
-import type { Position } from "./Board";
 
 export default interface MoveView {
   readonly player: PlayerView;
