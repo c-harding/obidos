@@ -25,7 +25,9 @@
         "test": "jest",
         "coverage": "cd .. && codecov -f model/.coverage/lcov.info -F model",
         "typecheck": "tsc --noEmit",
-        "eslint": "eslint --fix src/**/*.ts test/**/*.ts",
-        "lint": "yarn eslint --quiet && prettier src/**/*.ts test/**/*.ts -w && yarn eslint"
+        "eslint": "eslint src/**/*.ts test/**/*.ts",
+        "eslint-fix": "eslint src/**/*.ts test/**/*.ts --fix",
+        "check": "yarn typecheck && prettier src/**/*.ts test/**/*.ts && yarn eslint",
+        "lint": "yarn eslint-fix --quiet && prettier src/**/*.ts test/**/*.ts -w && yarn eslint-fix"
     }
 }

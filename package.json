@@ -10,6 +10,7 @@
     "cli-player"
   ],
   "scripts": {
+    "check": "yarn workspaces foreach run check",
     "lint": "yarn workspaces foreach run lint",
     "test": "yarn workspaces foreach run test",
     "coverage": "yarn workspaces foreach run coverage"

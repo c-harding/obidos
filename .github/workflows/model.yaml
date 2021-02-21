@@ -19,20 +19,21 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         run: yarn install --immutable
-      - name: lint
+      - name: Typecheck and lint
         run: |
           ERROR=0
           for dir in cli-player model; do
-            yarn --cwd "$dir" run test || ERROR=1
+            (cd "$dir" && yarn run check) || ERROR=1
           done
           exit $ERROR
-      - name: test
+      - name: Run tests
+        if: always()
         run: |
           ERROR=0
           for dir in cli-player model; do
-            yarn --cwd "$dir" run test || ERROR=1
+            (cd "$dir" && yarn run test) || ERROR=1
           done
           exit $ERROR
-      - run: yarn coverage
-        name: Upload coverage
+      - name: Upload coverage
+        run: yarn coverage
         if: always()

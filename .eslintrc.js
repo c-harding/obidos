@@ -28,7 +28,6 @@ module.exports = {
       "error",
       {
         rootDir: __dirname,
-        relativeDepth: 0,
         aliases: [
           {
             alias: "@obidos/",
