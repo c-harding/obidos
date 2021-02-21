@@ -83,5 +83,5 @@ export function readFlags(paths: string[]): [string[], string[]] {
 }
 
 export function rootCwd(...args: [] | [file: string]): string {
-  return resolve(process.env.INIT_CWD ?? __dirname, ...args);
+  return resolve(__dirname, "..", ...args);
 }
