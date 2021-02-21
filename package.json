@@ -7,7 +7,8 @@
   "private": true,
   "workspaces": [
     "model",
-    "cli-player"
+    "cli-player",
+    "actions"
   ],
   "scripts": {
     "check": "yarn workspaces foreach run check",

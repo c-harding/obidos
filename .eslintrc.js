@@ -43,6 +43,7 @@ module.exports = {
       },
     ],
     "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-unnecessary-condition": "warn",
     "unused-imports/no-unused-imports-ts": "warn",
     "import/no-duplicates": "warn",
     "import/newline-after-import": "warn",

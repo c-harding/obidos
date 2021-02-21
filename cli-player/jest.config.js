@@ -4,7 +4,7 @@ module.exports = {
   coverageDirectory: "./.coverage/",
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.ts"],
-  reporters: ["default", "jest-junit"],
+  testLocationInResults: true,
   coverageReporters: ["text", ["lcov", { projectRoot: ".." }]],
   testRegex: "/test/.*\\.spec\\.ts",
   preset: "ts-jest",

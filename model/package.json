@@ -23,7 +23,7 @@
         "typescript": "^4.1.3"
     },
     "scripts": {
-        "test": "jest",
+        "test": "jest --testLocationInResults --json --outputFile=jest-report.json",
         "coverage": "cd .. && codecov -f model/.coverage/lcov.info -F model",
         "typecheck": "tsc --noEmit",
         "eslint": "eslint src/**/*.ts test/**/*.ts",

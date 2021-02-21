@@ -1,0 +1,29 @@
+{
+    "name": "@obidos/actions",
+    "version": "0.0.1",
+    "description": "The scripts used in Óbidos",
+    "repository": "github:xsanda/obidos.git",
+    "author": "Charlie Harding <obidos@charding.dev>",
+    "license": "GPL-3.0-or-later",
+    "devDependencies": {
+        "@jest/test-result": "^26.6.2",
+        "@types/node": "^14.14.31",
+        "eslint": "^7.19.0",
+        "prettier": "^2.2.1",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.1.3"
+    },
+    "scripts": {
+        "typecheck": "tsc --noEmit",
+        "eslint": "eslint *.ts",
+        "eslint-fix": "eslint *.ts --fix",
+        "prettier": "prettier --loglevel warn *.ts",
+        "check": "yarn typecheck && yarn prettier --check && yarn eslint",
+        "lint": "yarn eslint-fix && yarn prettier -w && yarn eslint-fix",
+        "process-jest-json": "ts-node process-jest-json.ts"
+    },
+    "dependencies": {
+        "@actions/core": "^1.2.6",
+        "@actions/github": "^4.0.0"
+    }
+}

@@ -33,12 +33,8 @@ jobs:
           done
           exit $ERROR
       - name: Upload test results
-        # uses: EnricoMi/publish-unit-test-result-action@v1
-        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
         if: always()
-        with:
-          github_token: ${{ github.token }}
-          files: ./**/junit.xml
+        run: yarn --cwd actions run process-jest-json **/jest-report.json
       - name: Upload coverage
         run: yarn coverage
         if: always()
