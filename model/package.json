@@ -28,9 +28,8 @@
         "typecheck": "tsc --noEmit",
         "eslint": "eslint src/**/*.ts test/**/*.ts",
         "eslint-file": "yarn eslint --f json -o eslint-report.json",
-        "eslint-fix": "eslint src/**/*.ts test/**/*.ts --fix",
         "prettier": "prettier --loglevel warn src/**/*.ts test/**/*.ts",
         "check": "yarn typecheck && yarn prettier --check && yarn eslint-file",
-        "lint": "yarn eslint-fix && yarn prettier -w && yarn eslint-fix"
+        "lint": "yarn eslint --fix && yarn prettier -w && yarn eslint --fix"
     }
 }

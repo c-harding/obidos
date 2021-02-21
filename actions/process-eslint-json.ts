@@ -33,7 +33,7 @@ async function combineAnnotations(
 const errorsAndWarnings = (errors: number, warnings: number) =>
   `${count(errors, "error")} and ${count(warnings, "warning")}`;
 
-const capitalize = (word: string) => word.charAt(0).toUpperCase + word.slice(1);
+const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
 
 const buildSentence = (...clauses: (string | false | undefined)[]) =>
   capitalize(clauses.filter(Boolean).join(", ") + ".");
@@ -48,10 +48,11 @@ const main = ([, , ...paths]: string[]) =>
 
     const annotationsPromise = combineAnnotations(eslintFilePromises, root);
 
-    const eslintFiles = (await Promise.all(eslintFilePromises)).flat();
+    const eslintFiles = (await Promise.all(eslintFilePromises))
+      .flat()
+      .filter((file) => file.errorCount + file.warningCount > 0);
 
     const success = eslintFiles.length === 0;
-    if (!success) console.log(eslintFiles);
 
     type SummaryKey = KeysOfType<ESLintFileReport, number>;
     const summaryKeys: SummaryKey[] = [
