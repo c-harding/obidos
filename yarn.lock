@@ -672,6 +672,7 @@ __metadata:
     "@actions/core": ^1.2.6
     "@actions/github": ^4.0.0
     "@jest/test-result": ^26.6.2
+    "@octokit/plugin-rest-endpoint-methods": ^4.12.0
     "@types/node": ^14.14.31
     eslint: ^7.19.0
     prettier: ^2.2.1
@@ -786,7 +787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/plugin-rest-endpoint-methods@npm:^4.0.0":
+"@octokit/plugin-rest-endpoint-methods@npm:^4.0.0, @octokit/plugin-rest-endpoint-methods@npm:^4.12.0":
   version: 4.12.0
   resolution: "@octokit/plugin-rest-endpoint-methods@npm:4.12.0"
   dependencies:

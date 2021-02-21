@@ -30,4 +30,4 @@ bower_components
 # End of https://www.toptal.com/developers/gitignore/api/yarn,react
 
 .coverage/
-jest-report.json
+*-report.json

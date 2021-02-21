@@ -1,20 +1,9 @@
-import * as core from "@actions/core";
-import { context, getOctokit } from "@actions/github";
+import { context } from "@actions/github";
 import type { FormattedTestResults } from "@jest/test-result/build/types";
-import { readFile } from "fs/promises";
 import { resolve } from "path";
 
-type Annotation = {
-  annotation_level: "failure" | "notice" | "warning";
-  end_column?: number | undefined;
-  end_line: number;
-  message: string;
-  path: string;
-  raw_details?: string | undefined;
-  start_column?: number | undefined;
-  start_line: number;
-  title?: string | undefined;
-};
+import type { Annotation } from "@obidos/actions/read-config-file";
+import { readJsonFile, withGitHub } from "@obidos/actions/read-config-file";
 
 type KeysOfType<T, TProp> = NonNullable<
   {
@@ -35,10 +24,6 @@ function getAnnotations(results: FormattedTestResults, cwd: string): Annotation[
         message: assertion.failureMessages?.join("\n\n") ?? "",
       })),
   );
-}
-
-async function readJestFile(path: string): Promise<FormattedTestResults> {
-  return JSON.parse(await readFile(path, "utf-8"));
 }
 
 async function combineAnnotations(
@@ -66,22 +51,15 @@ function getOutputText(results: FormattedTestResults[]) {
   return "```\n" + entries.join("\n").trimRight() + "\n```";
 }
 
-async function main([, , ...paths]: string[]): Promise<void> {
-  try {
-    const token = process.env.GITHUB_TOKEN;
-    if (token === undefined) {
-      core.error("GITHUB_TOKEN not set.");
-      core.setFailed("GITHUB_TOKEN not set.");
-      return;
-    }
-
+const main = ([, , ...paths]: string[]) =>
+  withGitHub(async () => {
     const root = resolve(__dirname, "..");
 
-    const jestFilePromises = paths.map((path) => readJestFile(resolve(root, path)));
+    const jestFilePromises = paths.map((path) =>
+      readJsonFile<FormattedTestResults>(resolve(root, path)),
+    );
 
     const annotationsPromise = combineAnnotations(jestFilePromises, root);
-
-    const octokit = getOctokit(token);
 
     const jestFiles = await Promise.all(jestFilePromises);
 
@@ -108,8 +86,7 @@ async function main([, , ...paths]: string[]): Promise<void> {
         }.`
       : `Failed tests: ${summary.numFailedTests}/${summary.numTotalTests}. Failed suites: ${summary.numFailedTestSuites}/${summary.numTotalTestSuites}.`;
 
-    // Checks
-    await octokit.checks.create({
+    return {
       ...context.repo,
       head_sha: getSha(),
       name: "Test results",
@@ -121,12 +98,8 @@ async function main([, , ...paths]: string[]): Promise<void> {
         summary: summaryText,
         annotations: await annotationsPromise,
       },
-    });
-  } catch (error) {
-    console.error(error);
-    core.setFailed(error.message);
-  }
-}
+    };
+  });
 
 if (require.main === module) {
   main(process.argv).catch((error) => {
