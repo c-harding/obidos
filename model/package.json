@@ -27,7 +27,8 @@
         "typecheck": "tsc --noEmit",
         "eslint": "eslint src/**/*.ts test/**/*.ts",
         "eslint-fix": "eslint src/**/*.ts test/**/*.ts --fix",
-        "check": "yarn typecheck && prettier --check src/**/*.ts test/**/*.ts && yarn eslint",
-        "lint": "yarn eslint-fix --quiet && prettier src/**/*.ts test/**/*.ts -w && yarn eslint-fix"
+        "prettier": "prettier --loglevel warn src/**/*.ts test/**/*.ts",
+        "check": "yarn typecheck && yarn prettier --check && yarn eslint",
+        "lint": "yarn eslint-fix && yarn prettier -w && yarn eslint-fix"
     }
 }
