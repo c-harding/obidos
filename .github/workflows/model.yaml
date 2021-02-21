@@ -17,8 +17,22 @@ jobs:
         with:
           path: "**/.yarn/cache"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install --immutable
-      - run: yarn test
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: lint
+        run: |
+          ERROR=0
+          for dir in cli-player model; do
+            yarn --cwd "$dir" run test || ERROR=1
+          done
+          exit $ERROR
+      - name: test
+        run: |
+          ERROR=0
+          for dir in cli-player model; do
+            yarn --cwd "$dir" run test || ERROR=1
+          done
+          exit $ERROR
       - run: yarn coverage
         name: Upload coverage
         if: always()
