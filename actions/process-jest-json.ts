@@ -6,7 +6,12 @@ import type {
   CreateCheckParams,
   KeysOfType,
 } from "@obidos/actions/read-config-file";
-import { count, readJsonFile, withGitHub } from "@obidos/actions/read-config-file";
+import {
+  count,
+  readFlags,
+  readJsonFile,
+  withGitHub,
+} from "@obidos/actions/read-config-file";
 
 function getAnnotations(results: FormattedTestResults, cwd: string): Annotation[] {
   return results.testResults.flatMap((result) =>
@@ -155,10 +160,8 @@ async function prepareAnnotations(paths: string[]): Promise<CreateCheckParams> {
 }
 
 async function main([, , ...paths]: string[]) {
-  let literalIndex = paths.indexOf("--");
-  if (literalIndex === -1) literalIndex = paths.length;
-  const filePaths = paths.filter((term, i) => i > literalIndex || !term.startsWith("--"));
-  if (paths.indexOf("--no-github") < literalIndex) {
+  const [flags, filePaths] = readFlags(paths);
+  if (flags.includes("--no-github")) {
     console.log(await prepareAnnotations(filePaths));
   } else {
     await withGitHub(() => prepareAnnotations(filePaths));

@@ -72,3 +72,11 @@ export async function withGitHub(
     core.setFailed(error.message);
   }
 }
+
+export function readFlags(paths: string[]): [string[], string[]] {
+  let literalIndex = paths.indexOf("--");
+  if (literalIndex === -1) literalIndex = paths.length;
+  const filePaths = paths.filter((term, i) => i > literalIndex || !term.startsWith("-"));
+  const flags = paths.filter((term, i) => i < literalIndex && term.startsWith("-"));
+  return [flags, filePaths];
+}
