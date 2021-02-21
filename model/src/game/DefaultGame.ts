@@ -1,7 +1,7 @@
 import FrozenArrayBuilder from "../board/FrozenArrayBuilder";
-import { range } from "../iteration";
 import { Side } from "../tile/Side";
 import { Tile } from "../tile/Tile";
+import { range } from "../util/iteration";
 
 // Source:
 // https://static1.squarespace.com/static/53ec790ae4b0396cbd14d8a1/t/5979af2f893fc0424c4691f9/1501146946692/Carcassonne-board-game-rules.pdf

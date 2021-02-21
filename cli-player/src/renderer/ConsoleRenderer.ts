@@ -1,18 +1,18 @@
 import type { Position } from "@obidos/model/src/board/Board";
 import type BoardView from "@obidos/model/src/board/BoardView";
 import { defaultTiles } from "@obidos/model/src/game/DefaultGame";
+import type TileRenderer from "@obidos/model/src/printer/TileRenderer";
+import { Side } from "@obidos/model/src/tile/Side";
+import type { Tile } from "@obidos/model/src/tile/Tile";
+import { TileRoad, TileRoadType } from "@obidos/model/src/tile/TileRoad";
+import TileSide from "@obidos/model/src/tile/TileSide";
 import {
   fillArray,
   generateArray,
   indexedOuterWindow,
   range,
   repeatString,
-} from "@obidos/model/src/iteration";
-import type TileRenderer from "@obidos/model/src/printer/TileRenderer";
-import { Side } from "@obidos/model/src/tile/Side";
-import type { Tile } from "@obidos/model/src/tile/Tile";
-import { TileRoad, TileRoadType } from "@obidos/model/src/tile/TileRoad";
-import TileSide from "@obidos/model/src/tile/TileSide";
+} from "@obidos/model/src/util/iteration";
 import { cycle, repeat, zip } from "wu";
 
 export default class ConsoleRenderer implements TileRenderer<string[]> {

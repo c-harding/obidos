@@ -1,12 +1,12 @@
 import type { PositionWithSide, PositionWithSides } from "@obidos/model/src/board/Board";
 import type BoardView from "@obidos/model/src/board/BoardView";
-import { range } from "@obidos/model/src/iteration";
 import type Player from "@obidos/model/src/player/Player";
 import type PlayerFactory from "@obidos/model/src/player/PlayerFactory";
 import type PlayerView from "@obidos/model/src/player/PlayerView";
 import RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import type { Side } from "@obidos/model/src/tile/Side";
 import type { Tile } from "@obidos/model/src/tile/Tile";
+import { range } from "@obidos/model/src/util/iteration";
 import prompts from "prompts";
 import wu from "wu";
 

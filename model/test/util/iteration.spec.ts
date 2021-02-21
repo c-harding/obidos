@@ -7,7 +7,7 @@ import {
   range,
   repeatString,
   trimArray,
-} from "../src/iteration";
+} from "../../src/util/iteration";
 
 describe("iteration", () => {
   describe("range", () => {

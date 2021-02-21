@@ -1,10 +1,10 @@
 import wu, { zip } from "wu";
 
-import { outerWindow, range } from "../iteration";
-import MemoizedProp from "../memoizedProp";
+import MemoizedProp from "../util/memoizedProp";
 import RotatedTile from "../tile/RotatedTile";
 import { Side } from "../tile/Side";
 import { Tile } from "../tile/Tile";
+import { outerWindow, range } from "../util/iteration";
 import BidiArray from "./BidiArray";
 import type BoardView from "./BoardView";
 
