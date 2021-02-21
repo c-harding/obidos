@@ -103,9 +103,9 @@ function getOutputText(results: FormattedTestResults[], success: boolean) {
   }
   const fullTestOutput = results.map(listToTree).join("\n\n");
   return (
-    "<details><summary>Full list of tests</summary>\n\n```" +
+    "<details><summary>Full list of tests</summary>\n\n```\n" +
     fullTestOutput +
-    "```\n\n</details>\n\n" +
+    "\n```\n\n</details>\n\n" +
     failureBlock
   );
 }
