@@ -1,7 +1,6 @@
+import * as core from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 import { readFile } from "fs/promises";
-
-import * as core from "@actions/core";
 import { resolve } from "path";
 /** Get all the keys of an object such that the value is of the given type. */
 export type KeysOfType<T, TProp> = NonNullable<
