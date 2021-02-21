@@ -37,9 +37,8 @@ async function readJestFile(path: string): Promise<FormattedTestResults> {
 
 async function combineAnnotations(
   jestFilePromises: Promise<FormattedTestResults>[],
+  root: string,
 ): Promise<Annotation[]> {
-  const root = resolve(__dirname, "..");
-
   return (
     await Promise.all(
       jestFilePromises.map(async (jestFilePromise) =>
@@ -62,9 +61,11 @@ async function main([, , ...paths]: string[]): Promise<void> {
       return;
     }
 
-    const jestFilePromises = paths.map((path) => readJestFile(path));
+    const root = resolve(__dirname, "..");
 
-    const annotationsPromise = combineAnnotations(jestFilePromises);
+    const jestFilePromises = paths.map((path) => readJestFile(resolve(root, path)));
+
+    const annotationsPromise = combineAnnotations(jestFilePromises, root);
 
     const octokit = getOctokit(token);
 
