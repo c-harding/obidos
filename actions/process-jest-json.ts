@@ -1,7 +1,11 @@
 import type { FormattedTestResults } from "@jest/test-result/build/types";
 import { resolve } from "path";
 
-import type { Annotation, KeysOfType } from "@obidos/actions/read-config-file";
+import type {
+  Annotation,
+  CreateCheckParams,
+  KeysOfType,
+} from "@obidos/actions/read-config-file";
 import { count, readJsonFile, withGitHub } from "@obidos/actions/read-config-file";
 
 function getAnnotations(results: FormattedTestResults, cwd: string): Annotation[] {
@@ -33,7 +37,7 @@ async function combineAnnotations(
 }
 
 class Tree {
-  entries: Tree[] = [];
+  readonly entries: Tree[] = [];
 
   constructor(readonly label: string) {}
 
@@ -41,20 +45,28 @@ class Tree {
     return this.entries[this.entries.length - 1];
   }
 
-  add(value: string, path: string[] = []): this {
+  private push(next: string) {
+    this.entries.push(new Tree(next));
+    return this.entries[this.entries.length - 1];
+  }
+
+  add(value: string, path: string[] = []): Tree {
     if (path.length === 0) {
-      this.entries.push(new Tree(value));
+      return this.push(value);
     } else {
       const [next, ...rest] = path;
-      if (next === this.last?.label) this.last.add(value, rest);
-      else this.entries.push(new Tree(next).add(value, rest));
+      const last = next === this.last?.label ? this.last : this.push(next);
+      last.add(value, rest);
+      return last;
     }
-    return this;
   }
 
   toString(): string {
     return this.entries
-      .map((entry) => `${entry}\n${entry.toString().replace("\n", "\n  ")}`)
+      .map((entry) => {
+        if (entry.entries.length === 0) return entry.label;
+        return `${entry.label}\n${entry.toString().replace(/^(?!\n)/gm, "  ")}`;
+      })
       .join("\n");
   }
 }
@@ -94,54 +106,64 @@ function getOutputText(results: FormattedTestResults[], success: boolean) {
   );
 }
 
-const main = ([, , ...paths]: string[]) =>
-  withGitHub(async () => {
-    const root = resolve(__dirname, "..");
+async function prepareAnnotations(paths: string[]): Promise<CreateCheckParams> {
+  const root = resolve(__dirname, "..");
 
-    const jestFilePromises = paths.map((path) =>
-      readJsonFile<FormattedTestResults>(resolve(root, path)),
-    );
+  const jestFilePromises = paths.map((path) =>
+    readJsonFile<FormattedTestResults>(resolve(root, path)),
+  );
 
-    const annotationsPromise = combineAnnotations(jestFilePromises, root);
+  const annotationsPromise = combineAnnotations(jestFilePromises, root);
 
-    const jestFiles = await Promise.all(jestFilePromises);
+  const jestFiles = await Promise.all(jestFilePromises);
 
-    const success = jestFiles.every((file) => file.success);
-    type SummaryKey = KeysOfType<FormattedTestResults, number>;
-    const summaryKeys: SummaryKey[] = [
-      "numPassedTests",
-      "numPassedTestSuites",
-      "numFailedTests",
-      "numFailedTestSuites",
-      "numTotalTests",
-      "numTotalTestSuites",
-    ];
-    const summary = Object.fromEntries(
-      summaryKeys.map((summaryKey) => [
-        summaryKey,
-        jestFiles.map((jestFile) => jestFile[summaryKey]).reduce((a, b) => a + b, 0),
-      ]),
-    ) as Record<SummaryKey, number>;
+  const success = jestFiles.every((file) => file.success);
+  type SummaryKey = KeysOfType<FormattedTestResults, number>;
+  const summaryKeys: SummaryKey[] = [
+    "numPassedTests",
+    "numPassedTestSuites",
+    "numFailedTests",
+    "numFailedTestSuites",
+    "numTotalTests",
+    "numTotalTestSuites",
+  ];
+  const summary = Object.fromEntries(
+    summaryKeys.map((summaryKey) => [
+      summaryKey,
+      jestFiles.map((jestFile) => jestFile[summaryKey]).reduce((a, b) => a + b, 0),
+    ]),
+  ) as Record<SummaryKey, number>;
 
-    const summaryText = success
-      ? `${count(summary.numPassedTests, "test")} passing in ${count(
-          summary.numPassedTestSuites,
-          "suite",
-        )}.`
-      : `Failed tests: ${summary.numFailedTests}/${summary.numTotalTests}. Failed suites: ${summary.numFailedTestSuites}/${summary.numTotalTestSuites}.`;
+  const summaryText = success
+    ? `${count(summary.numPassedTests, "test")} passing in ${count(
+        summary.numPassedTestSuites,
+        "suite",
+      )}.`
+    : `Failed tests: ${summary.numFailedTests}/${summary.numTotalTests}. Failed suites: ${summary.numFailedTestSuites}/${summary.numTotalTestSuites}.`;
 
-    return {
-      name: "Test results",
-      status: "completed",
-      conclusion: success ? "success" : "failure",
-      output: {
-        title: success ? "Jest tests passed" : "Jest tests failed",
-        text: getOutputText(jestFiles, success),
-        summary: summaryText,
-        annotations: await annotationsPromise,
-      },
-    };
-  });
+  return {
+    name: "Test results",
+    status: "completed",
+    conclusion: success ? "success" : "failure",
+    output: {
+      title: success ? "Jest tests passed" : "Jest tests failed",
+      text: getOutputText(jestFiles, success),
+      summary: summaryText,
+      annotations: await annotationsPromise,
+    },
+  };
+}
+
+async function main([, , ...paths]: string[]) {
+  let literalIndex = paths.indexOf("--");
+  if (literalIndex === -1) literalIndex = paths.length;
+  const filePaths = paths.filter((term, i) => i > literalIndex || !term.startsWith("--"));
+  if (paths.indexOf("--no-github") < literalIndex) {
+    console.log(await prepareAnnotations(filePaths));
+  } else {
+    await withGitHub(() => prepareAnnotations(filePaths));
+  }
+}
 
 if (require.main === module) {
   main(process.argv).catch((error) => {
