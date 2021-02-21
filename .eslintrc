@@ -26,7 +26,26 @@
                 "argsIgnorePattern": "^_"
             }
         ],
-        "simple-import-sort/imports": "warn",
+        "simple-import-sort/imports": [
+            "warn",
+            {
+                "groups": [
+                    [
+                        "^\\u0000"
+                    ],
+                    [
+                        "^"
+                    ],
+                    [
+                        "^@?(?!obidos)\\w"
+                    ],
+                    [
+                        "^@obidos",
+                        "^\\."
+                    ]
+                ]
+            }
+        ],
         "@typescript-eslint/consistent-type-imports": "error",
         "unused-imports/no-unused-imports-ts": "warn",
         "import/no-duplicates": "warn"

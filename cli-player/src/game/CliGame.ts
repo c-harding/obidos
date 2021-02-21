@@ -1,6 +1,6 @@
-import LocalGame from "@obidos/model/src/game/LocalGame";
 import wu from "wu";
 
+import LocalGame from "@obidos/model/src/game/LocalGame";
 import { CliPlayer } from "../player/CliPlayer";
 
 async function runCliGame(): Promise<void> {

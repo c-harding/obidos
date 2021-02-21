@@ -1,3 +1,5 @@
+import { cycle, repeat, zip } from "wu";
+
 import type { Position } from "@obidos/model/src/board/Board";
 import type BoardView from "@obidos/model/src/board/BoardView";
 import { defaultTiles } from "@obidos/model/src/game/DefaultGame";
@@ -13,7 +15,6 @@ import {
   range,
   repeatString,
 } from "@obidos/model/src/util/iteration";
-import { cycle, repeat, zip } from "wu";
 
 export default class ConsoleRenderer implements TileRenderer<string[]> {
   private static coordinatesForSide: Record<Side, [number, number]> = Object.freeze({

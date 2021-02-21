@@ -1,10 +1,10 @@
+import wu from "wu";
+
 import { Board } from "@obidos/model/src/board/Board";
 import { defaultTiles } from "@obidos/model/src/game/DefaultGame";
 import RotatedTile from "@obidos/model/src/tile/RotatedTile";
 import { Side } from "@obidos/model/src/tile/Side";
 import { Tile } from "@obidos/model/src/tile/Tile";
-import wu from "wu";
-
 import ConsoleRenderer from "../../src/renderer/ConsoleRenderer";
 
 function tileRenderer(renderer: ConsoleRenderer, tile: Tile): string[] {
