@@ -1,5 +1,4 @@
 import type { FormattedTestResults } from "@jest/test-result/build/types";
-import { resolve } from "path";
 
 import type {
   Annotation,
@@ -10,15 +9,16 @@ import {
   count,
   readFlags,
   readJsonFile,
+  rootCwd,
   withGitHub,
 } from "@obidos/actions/read-config-file";
 
-function getAnnotations(results: FormattedTestResults, cwd: string): Annotation[] {
+function getAnnotations(results: FormattedTestResults): Annotation[] {
   return results.testResults.flatMap((result) =>
     result.assertionResults
       .filter((assertion) => assertion.status === "failed")
       .map((assertion) => ({
-        path: result.name.replace(cwd, ""),
+        path: result.name.replace(rootCwd(), ""),
         start_line: assertion.location?.line ?? 0,
         end_line: assertion.location?.line ?? 0,
         annotation_level: "failure",
@@ -30,12 +30,11 @@ function getAnnotations(results: FormattedTestResults, cwd: string): Annotation[
 
 async function combineAnnotations(
   jestFilePromises: Promise<FormattedTestResults>[],
-  root: string,
 ): Promise<Annotation[]> {
   return (
     await Promise.all(
       jestFilePromises.map(async (jestFilePromise) =>
-        getAnnotations(await jestFilePromise, root),
+        getAnnotations(await jestFilePromise),
       ),
     )
   ).flat();
@@ -79,7 +78,7 @@ class Tree {
 function listToTree(results: FormattedTestResults): Tree {
   const tree = new Tree("");
   for (const test of results.testResults) {
-    const subtree = tree.add(test.name);
+    const subtree = tree.add(test.name.replace(rootCwd(), ""));
     for (const assertion of test.assertionResults) {
       const testSuffix =
         assertion.status === "passed" ? "" : ` (${assertion.status.toUpperCase()})`;
@@ -112,13 +111,11 @@ function getOutputText(results: FormattedTestResults[], success: boolean) {
 }
 
 async function prepareAnnotations(paths: string[]): Promise<CreateCheckParams> {
-  const root = resolve(__dirname, "..");
-
   const jestFilePromises = paths.map((path) =>
-    readJsonFile<FormattedTestResults>(resolve(root, path)),
+    readJsonFile<FormattedTestResults>(rootCwd(path)),
   );
 
-  const annotationsPromise = combineAnnotations(jestFilePromises, root);
+  const annotationsPromise = combineAnnotations(jestFilePromises);
 
   const jestFiles = await Promise.all(jestFilePromises);
 

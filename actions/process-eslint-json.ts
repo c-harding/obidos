@@ -1,5 +1,3 @@
-import { resolve } from "path";
-
 import type { ESLintFileReport } from "@obidos/actions/eslint-json-format";
 import type {
   Annotation,
@@ -10,13 +8,14 @@ import {
   count,
   readFlags,
   readJsonFile,
+  rootCwd,
   withGitHub,
 } from "@obidos/actions/read-config-file";
 
-function getAnnotations(fileReports: ESLintFileReport[], cwd: string): Annotation[] {
+function getAnnotations(fileReports: ESLintFileReport[]): Annotation[] {
   return fileReports.flatMap((fileReport) =>
     fileReport.messages.map<Annotation>((lintError) => ({
-      path: fileReport.filePath.replace(cwd, ""),
+      path: fileReport.filePath.replace(rootCwd(), ""),
       start_line: lintError.line,
       end_line: lintError.endLine,
       annotation_level: lintError.severity === 2 ? "failure" : "warning",
@@ -28,12 +27,11 @@ function getAnnotations(fileReports: ESLintFileReport[], cwd: string): Annotatio
 
 async function combineAnnotations(
   eslintFilePromises: Promise<ESLintFileReport[]>[],
-  root: string,
 ): Promise<Annotation[]> {
   return (
     await Promise.all(
       eslintFilePromises.map(async (eslintFilePromise) =>
-        getAnnotations(await eslintFilePromise, root),
+        getAnnotations(await eslintFilePromise),
       ),
     )
   ).flat();
@@ -48,13 +46,11 @@ const buildSentence = (...clauses: (string | false | undefined)[]) =>
   capitalize(clauses.filter(Boolean).join(", ") + ".");
 
 async function prepareAnnotations(paths: string[]): Promise<CreateCheckParams> {
-  const root = resolve(__dirname, "..");
-
   const eslintFilePromises = paths.map((path) =>
-    readJsonFile<ESLintFileReport[]>(resolve(root, path)),
+    readJsonFile<ESLintFileReport[]>(rootCwd(path)),
   );
 
-  const annotationsPromise = combineAnnotations(eslintFilePromises, root);
+  const annotationsPromise = combineAnnotations(eslintFilePromises);
 
   const eslintFiles = (await Promise.all(eslintFilePromises))
     .flat()

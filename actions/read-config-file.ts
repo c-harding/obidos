@@ -31,6 +31,7 @@ export async function readJsonFile<T>(path: string): Promise<T> {
   return JSON.parse(await readFile(path, "utf-8"));
 }
 import * as core from "@actions/core";
+import { resolve } from "path";
 
 export interface CreateCheckOutput {
   title: string;
@@ -79,4 +80,8 @@ export function readFlags(paths: string[]): [string[], string[]] {
   const filePaths = paths.filter((term, i) => i > literalIndex || !term.startsWith("-"));
   const flags = paths.filter((term, i) => i < literalIndex && term.startsWith("-"));
   return [flags, filePaths];
+}
+
+export function rootCwd(...args: [] | [file: string]): string {
+  return resolve(process.env.INIT_CWD ?? __dirname, ...args);
 }
