@@ -29,7 +29,7 @@
         "eslint": "eslint src/**/*.ts test/**/*.ts",
         "eslint-file": "yarn eslint --f json -o eslint-report.json",
         "prettier": "prettier --loglevel warn src/**/*.ts test/**/*.ts",
-        "check": "yarn typecheck && yarn prettier --check && yarn eslint-file",
+        "check": "yarn typecheck && yarn eslint-file && yarn prettier --check",
         "lint": "yarn eslint --fix && yarn prettier -w && yarn eslint --fix && yarn typecheck"
     }
 }
