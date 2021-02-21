@@ -92,6 +92,8 @@ async function main([, , ...paths]: string[]): Promise<void> {
       "numPassedTestSuites",
       "numFailedTests",
       "numFailedTestSuites",
+      "numTotalTests",
+      "numTotalTestSuites",
     ];
     const summary = Object.fromEntries(
       summaryKeys.map((summaryKey) => [
@@ -104,7 +106,7 @@ async function main([, , ...paths]: string[]): Promise<void> {
       ? `${summary.numPassedTests} tests passing in ${summary.numPassedTestSuites} suite${
           summary.numPassedTestSuites > 1 ? "s" : ""
         }.`
-      : `Failed tests: ${summary.numFailedTests}/${summary.numTotalTests}. Failed suites: ${summary.numFailedTests}/${summary.numTotalTestSuites}.`;
+      : `Failed tests: ${summary.numFailedTests}/${summary.numTotalTests}. Failed suites: ${summary.numFailedTestSuites}/${summary.numTotalTestSuites}.`;
 
     // Checks
     await octokit.checks.create({
