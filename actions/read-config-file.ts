@@ -23,7 +23,7 @@ export type Annotation = {
 export function count(n: number, singular: string, plural?: string): string {
   const computedPlural = plural || singular + "s";
   if (n === 1) return `${n} ${singular}`;
-  else if (n === 0) return `No ${computedPlural}`;
+  else if (n === 0) return `no ${computedPlural}`;
   else return `${n} ${computedPlural}`;
 }
 
