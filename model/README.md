@@ -9,7 +9,7 @@ frontends/AIs.
 
 `yarn test` runs the tests.
 
-`yarn typecheck` typechecks the code.
+`yarn check` checks the codes for errors, without changing anything.
 
 `yarn lint` reformats the code, and prints any warnings and errors.
 

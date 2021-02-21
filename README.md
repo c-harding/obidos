@@ -20,15 +20,18 @@ It is named after the walled city of Óbidos in Portugal.
 ## Organisation
 
 The project is handled by yarn as a monorepo with multiple workspaces.
-This means that calling `yarn` from anywhere will install all the dependencies for the entire
-project.
+This means that calling `yarn` from anywhere will install all the dependencies for the entire project.
 The following workspaces are included:
 
 ### [`@obidos/model`](./model/#readme)
 
-This contains the data model for representing the game, and is used by both the server and the
-client.
+This contains the data model for representing the game, and is used by both the server and the client.
 
 ### [`@obidos/cli-player`](./cli-player/#readme)
 
 This contains a CLI interface for playing Óbidos.
+
+### [`@obidos/actions`](./actions/#readme)
+
+This contains scripts used for the continuous integration of this repo.
+Eventually they wil be released as full GitHub Actions steps, but for now they are only used here.

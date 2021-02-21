@@ -20,7 +20,7 @@
         "eslint-file": "yarn eslint --f json -o eslint-report.json",
         "prettier": "prettier --loglevel warn *.ts",
         "check": "yarn typecheck && yarn prettier --check && yarn eslint-file",
-        "lint": "yarn eslint --fix && yarn prettier -w && yarn eslint --fix",
+        "lint": "yarn eslint --fix && yarn prettier -w && yarn eslint --fix && yarn typecheck",
         "process-eslint-json": "ts-node process-eslint-json.ts",
         "process-jest-json": "ts-node process-jest-json.ts"
     },
