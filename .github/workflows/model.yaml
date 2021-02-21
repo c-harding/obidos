@@ -21,7 +21,7 @@ jobs:
         run: yarn install --immutable
       - name: Typecheck and lint
         run: |
-          for dir in cli-player model; do
+          for dir in cli-player model actions; do
             (cd "$dir" && yarn run check) || ERROR=1
           done
           exit $ERROR
@@ -32,9 +32,11 @@ jobs:
             (cd "$dir" && yarn run test) || ERROR=1
           done
           exit $ERROR
-      - name: Upload test results
+      - name: Upload test and lint results
         if: always()
-        run: yarn --cwd actions run process-jest-json **/jest-report.json
+        run: |
+          yarn --cwd actions run process-eslint-json **/eslint-report.json
+          yarn --cwd actions run process-jest-json **/jest-report.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload coverage

@@ -16,11 +16,12 @@
     },
     "scripts": {
         "typecheck": "tsc --noEmit",
-        "eslint": "eslint *.ts",
-        "eslint-fix": "eslint *.ts --fix",
-        "prettier": "prettier --loglevel warn *.ts",
-        "check": "yarn typecheck && yarn prettier --check && yarn eslint",
+        "eslint-file": "yarn eslint --f json -o eslint-report.json",
+        "eslint-fix": "eslint src/**/*.ts test/**/*.ts --fix",
+        "prettier": "prettier --loglevel warn src/**/*.ts test/**/*.ts",
+        "check": "yarn typecheck && yarn prettier --check && yarn eslint-file",
         "lint": "yarn eslint-fix && yarn prettier -w && yarn eslint-fix",
+        "process-eslint-json": "ts-node process-eslint-json.ts",
         "process-jest-json": "ts-node process-jest-json.ts"
     },
     "dependencies": {

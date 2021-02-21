@@ -1,15 +1,8 @@
-import { context } from "@actions/github";
 import type { FormattedTestResults } from "@jest/test-result/build/types";
 import { resolve } from "path";
 
-import type { Annotation } from "@obidos/actions/read-config-file";
-import { readJsonFile, withGitHub } from "@obidos/actions/read-config-file";
-
-type KeysOfType<T, TProp> = NonNullable<
-  {
-    [P in keyof T]: T[P] extends TProp ? P : never;
-  }[keyof T]
->;
+import type { Annotation, KeysOfType } from "@obidos/actions/read-config-file";
+import { count, readJsonFile, withGitHub } from "@obidos/actions/read-config-file";
 
 function getAnnotations(results: FormattedTestResults, cwd: string): Annotation[] {
   return results.testResults.flatMap((result) =>
@@ -37,10 +30,6 @@ async function combineAnnotations(
       ),
     )
   ).flat();
-}
-
-function getSha(): string {
-  return context.payload.pull_request?.head.sha ?? context.sha;
 }
 
 function getOutputText(results: FormattedTestResults[]) {
@@ -81,14 +70,13 @@ const main = ([, , ...paths]: string[]) =>
     ) as Record<SummaryKey, number>;
 
     const summaryText = success
-      ? `${summary.numPassedTests} tests passing in ${summary.numPassedTestSuites} suite${
-          summary.numPassedTestSuites > 1 ? "s" : ""
-        }.`
+      ? `${count(summary.numPassedTests, "test")} passing in ${count(
+          summary.numPassedTestSuites,
+          "suite",
+        )}.`
       : `Failed tests: ${summary.numFailedTests}/${summary.numTotalTests}. Failed suites: ${summary.numFailedTestSuites}/${summary.numTotalTestSuites}.`;
 
     return {
-      ...context.repo,
-      head_sha: getSha(),
       name: "Test results",
       status: "completed",
       conclusion: success ? "success" : "failure",
