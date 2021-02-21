@@ -28,7 +28,7 @@ export class CliPlayer implements Player {
   private perRow(count: number): number {
     const scale = this.renderer.scale;
     const tileSize = 2 * scale + 4; // border plus gap
-    const terminalCols = process.stdout.columns ?? 0;
+    const terminalCols = process.stdout.columns;
 
     const max = Math.min(count, Math.floor(terminalCols / tileSize));
     const rowCount = Math.ceil(count / max);
@@ -77,7 +77,7 @@ export class CliPlayer implements Player {
 
     const [row, col, [...sides]] = validMoves[chosenPosition - 1];
 
-    let side: Side;
+    let side: Side | undefined;
     if (sides.length > 1) {
       this.printRotations(tile, sides);
       side = (
