@@ -35,6 +35,8 @@ jobs:
       - name: Upload test results
         if: always()
         run: yarn --cwd actions run process-jest-json **/jest-report.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload coverage
         run: yarn coverage
         if: always()
