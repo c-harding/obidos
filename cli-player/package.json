@@ -20,7 +20,6 @@
         "eslint-plugin-jest": "^24.1.3",
         "jest": "^26.6.3",
         "prettier": "^2.2.1",
-        "prettylint": "^1.0.0",
         "ts-jest": "^26.5.0",
         "ts-node": "^9.1.1",
         "typescript": "^4.1.3"
@@ -31,7 +30,7 @@
         "typecheck": "tsc --noEmit",
         "eslint": "eslint src/**/*.ts test/**/*.ts",
         "eslint-fix": "eslint src/**/*.ts test/**/*.ts --fix",
-        "check": "yarn typecheck && prettylint src/**/*.ts test/**/*.ts && yarn eslint",
+        "check": "yarn typecheck && prettier --check src/**/*.ts test/**/*.ts && yarn eslint",
         "lint": "yarn eslint-fix --quiet && prettier src/**/*.ts test/**/*.ts -w && yarn eslint-fix",
         "cli-game": "ts-node src/game/CliGame.ts",
         "print-deck": "ts-node src/renderer/ConsoleRenderer.ts"
